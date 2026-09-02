@@ -1,0 +1,3418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GeoTrack</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f1f1f1;
+            color: #2b2b2b;
+        }
+
+        header {
+            background: #292929;
+            color: white;
+            padding: 28px 45px;
+            border-bottom: 4px solid #f28c28;
+        }
+
+        .header-content {
+            max-width: 1150px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 30px;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            margin: 6px 0 0;
+            color: #d6d6d6;
+        }
+
+        .logout-button {
+            background: #4a4a4a;
+            color: white;
+            border: none;
+            padding: 11px 17px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .logout-button:hover {
+            background: #555555;
+        }
+
+        main {
+            padding: 40px;
+            max-width: 1150px;
+            margin: auto;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-header h2 {
+            margin: 0;
+            color: #292929;
+            font-size: 25px;
+        }
+
+        button {
+            background: #f28c28;
+            color: white;
+            border: none;
+            padding: 11px 17px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 5px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #d97512;
+        }
+
+        .delete-button {
+            background: #4a4a4a;
+        }
+
+        .delete-button:hover {
+            background: #292929;
+        }
+
+        .cancel-button {
+            background: #777777;
+        }
+
+        .cancel-button:hover {
+            background: #555555;
+        }
+
+        .back-button {
+            background: #4a4a4a;
+        }
+
+        .back-button:hover {
+            background: #292929;
+        }
+
+        .statistics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #f28c28;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            color: #666666;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-number {
+            margin-top: 10px;
+            font-size: 32px;
+            font-weight: bold;
+            color: #292929;
+        }
+
+        .search-area {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .search-area input,
+        .search-area select {
+            padding: 12px;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            font-family: inherit;
+            background: white;
+        }
+
+        .search-area input {
+            flex: 1;
+        }
+
+        .search-area input:focus,
+        .search-area select:focus {
+            outline: none;
+            border-color: #f28c28;
+        }
+
+        #projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 22px;
+        }
+
+        .project-card {
+            background: white;
+            padding: 24px;
+            border-radius: 10px;
+            border-left: 5px solid #f28c28;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .project-card h3 {
+            margin-top: 5px;
+            margin-bottom: 15px;
+            color: #292929;
+        }
+
+        .project-reference {
+            color: #f28c28;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 6px 10px;
+            border-radius: 5px;
+            background: #fff0df;
+            color: #d97512;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .project-actions {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eeeeee;
+        }
+
+        .form-container {
+            display: none;
+            background: white;
+            padding: 28px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            border-top: 4px solid #f28c28;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-container h2 {
+            margin-top: 0;
+            color: #292929;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #3b3b3b;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            font-family: inherit;
+            background: #fafafa;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #f28c28;
+            background: white;
+        }
+
+        .form-group textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .form-buttons button {
+            margin-left: 0;
+        }
+
+        #projectDetails {
+            display: none;
+        }
+
+        .details-card {
+            background: white;
+            padding: 35px;
+            border-radius: 10px;
+            border-top: 5px solid #f28c28;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .details-reference {
+            color: #f28c28;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .details-card h2 {
+            color: #292929;
+            margin-bottom: 25px;
+        }
+
+        .detail-row {
+            padding: 15px 0;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #777777;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 16px;
+            color: #292929;
+        }
+
+        .details-actions {
+            margin-top: 25px;
+        }
+
+        .details-actions button {
+            margin-left: 0;
+            margin-right: 8px;
+        }
+
+        .investigations-section {
+            margin-top: 35px;
+            padding-top: 30px;
+            border-top: 2px solid #eeeeee;
+        }
+
+        .investigations-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .investigations-header h3 {
+            margin: 0;
+            color: #292929;
+            font-size: 20px;
+        }
+
+        #investigations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+        }
+
+        .investigation-card {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #f28c28;
+        }
+
+        .investigation-reference {
+            color: #f28c28;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .investigation-card h4 {
+            margin: 7px 0 15px;
+            color: #292929;
+        }
+
+        .investigation-card p {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        .investigation-actions {
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px solid #dddddd;
+        }
+
+        .investigation-actions button {
+            margin-left: 0;
+            margin-right: 5px;
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
+        .no-investigations {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 8px;
+            color: #777777;
+        }
+
+        .no-results {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            color: #777777;
+        }
+
+        .loading {
+            color: #777777;
+        }
+
+        .welcome-text {
+            margin: 7px 0 0;
+            color: #777777;
+            font-size: 14px;
+        }
+
+        .role-badge {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 9px;
+            border-radius: 5px;
+            background: #fff0df;
+            color: #d97512;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .status-overview {
+            background: white;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            border-left: 5px solid #f28c28;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .status-overview h3,
+        .recent-projects h3 {
+            margin: 0 0 20px;
+            color: #292929;
+        }
+
+        .status-row {
+            display: grid;
+            grid-template-columns: 110px 1fr 45px;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 14px;
+            font-size: 14px;
+        }
+
+        .status-bar {
+            height: 10px;
+            background: #eeeeee;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .status-fill {
+            height: 100%;
+            background: #f28c28;
+            border-radius: 10px;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .recent-projects {
+            background: white;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            border-left: 5px solid #f28c28;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .recent-project {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .recent-project:last-child {
+            border-bottom: none;
+        }
+
+        .recent-project-info strong {
+            display: block;
+            color: #292929;
+            margin-bottom: 4px;
+        }
+
+        .recent-project-info span {
+            color: #777777;
+            font-size: 13px;
+        }
+
+        .recent-project button {
+            margin-left: 0;
+            white-space: nowrap;
+        }
+
+        .deadline-statistics {
+            margin-bottom: 30px;
+        }
+
+        .deadline-on-track {
+            border-left-color: #4caf50;
+        }
+
+        .deadline-due-soon {
+            border-left-color: #f0ad4e;
+        }
+
+        .deadline-overdue {
+            border-left-color: #d9534f;
+        }
+
+        .deadline-badge {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 6px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.3px;
+        }
+
+        .deadline-on-track-badge {
+            background: #eaf7ec;
+            color: #2e7d32;
+        }
+
+        .deadline-due-soon-badge {
+            background: #fff4df;
+            color: #b26a00;
+        }
+
+        .deadline-overdue-badge {
+            background: #fdeaea;
+            color: #b71c1c;
+        }
+
+        .deadline-no-date-badge {
+            background: #eeeeee;
+            color: #666666;
+        }
+
+        .deadline-info {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #eeeeee;
+            font-size: 13px;
+            color: #666666;
+        }
+
+        .deadline-info strong {
+            color: #3b3b3b;
+        }
+
+
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: min(380px, calc(100vw - 48px));
+        }
+
+        .toast {
+            background: white;
+            border-radius: 8px;
+            padding: 16px 18px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.16);
+            border-left: 5px solid #f28c28;
+            animation: toastIn 0.25s ease;
+            font-size: 14px;
+            line-height: 1.45;
+        }
+
+        .toast-title {
+            font-weight: bold;
+            color: #292929;
+            margin-bottom: 4px;
+        }
+
+        .toast-message {
+            color: #666666;
+        }
+
+        .toast-success {
+            border-left-color: #4caf50;
+        }
+
+        .toast-error {
+            border-left-color: #d9534f;
+        }
+
+        .toast-warning {
+            border-left-color: #f0ad4e;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 25px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            main {
+                padding: 25px;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .statistics {
+                grid-template-columns: 1fr;
+            }
+
+            .search-area {
+                flex-direction: column;
+            }
+
+            .investigations-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .recent-project {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div id="toastContainer" class="toast-container"></div>
+
+<header>
+
+    <div class="header-content">
+
+        <div>
+            <h1>GEOTRACK</h1>
+
+            <p>
+                Geotechnical Project Management System
+            </p>
+        </div>
+
+        <button
+            class="logout-button"
+            onclick="logout()">
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+<main>
+
+    <div id="dashboard">
+
+        <div class="dashboard-header">
+
+            <div>
+                <h2>
+                    Project Dashboard
+                </h2>
+
+                <p class="welcome-text">
+                    Manage GeoTrack projects and site investigations
+                </p>
+
+                <span id="roleBadge" class="role-badge">
+                    LOGGED IN
+                </span>
+            </div>
+
+            <div>
+
+                <button onclick="showCreateForm()">
+                    + Add Project
+                </button>
+
+                <button onclick="loadProjects()">
+                    Refresh
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="statistics">
+
+            <div class="stat-card">
+
+                <h3>
+                    Total Projects
+                </h3>
+
+                <div
+                    id="totalProjects"
+                    class="stat-number">
+                    0
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>
+                    In Progress
+                </h3>
+
+                <div
+                    id="inProgressProjects"
+                    class="stat-number">
+                    0
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>
+                    Completed
+                </h3>
+
+                <div
+                    id="completedProjects"
+                    class="stat-number">
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="statistics deadline-statistics">
+
+            <div class="stat-card deadline-on-track">
+                <h3>On Track</h3>
+                <div id="onTrackProjects" class="stat-number">0</div>
+            </div>
+
+            <div class="stat-card deadline-due-soon">
+                <h3>Due Soon</h3>
+                <div id="dueSoonProjects" class="stat-number">0</div>
+            </div>
+
+            <div class="stat-card deadline-overdue">
+                <h3>Overdue</h3>
+                <div id="overdueProjects" class="stat-number">0</div>
+            </div>
+
+        </div>
+
+
+
+        <div class="statistics">
+
+            <div class="stat-card">
+
+                <h3>
+                    Total Investigations
+                </h3>
+
+                <div
+                    id="totalInvestigations"
+                    class="stat-number">
+                    0
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>
+                    Planned Investigations
+                </h3>
+
+                <div
+                    id="plannedInvestigations"
+                    class="stat-number">
+                    0
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>
+                    Investigations In Progress
+                </h3>
+
+                <div
+                    id="investigationsInProgress"
+                    class="stat-number">
+                    0
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>
+                    Completed Investigations
+                </h3>
+
+                <div
+                    id="completedInvestigations"
+                    class="stat-number">
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="status-overview">
+
+            <h3>
+                Project Status Overview
+            </h3>
+
+            <div class="status-row">
+                <span>Planned</span>
+
+                <div class="status-bar">
+                    <div id="plannedStatusBar" class="status-fill"></div>
+                </div>
+
+                <strong id="plannedStatusCount">0</strong>
+            </div>
+
+            <div class="status-row">
+                <span>In Progress</span>
+
+                <div class="status-bar">
+                    <div id="inProgressStatusBar" class="status-fill"></div>
+                </div>
+
+                <strong id="inProgressStatusCount">0</strong>
+            </div>
+
+            <div class="status-row">
+                <span>Completed</span>
+
+                <div class="status-bar">
+                    <div id="completedStatusBar" class="status-fill"></div>
+                </div>
+
+                <strong id="completedStatusCount">0</strong>
+            </div>
+
+        </div>
+
+        <div class="recent-projects">
+
+            <h3>
+                Recent Projects
+            </h3>
+
+            <div id="recentProjectsList">
+                <p class="loading">
+                    Loading recent projects...
+                </p>
+            </div>
+
+        </div>
+
+        <div class="search-area">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search projects..."
+                oninput="filterProjects()">
+
+            <select
+                id="statusFilter"
+                onchange="filterProjects()">
+
+                <option value="ALL">
+                    All Statuses
+                </option>
+
+                <option value="PLANNED">
+                    Planned
+                </option>
+
+                <option value="IN_PROGRESS">
+                    In Progress
+                </option>
+
+                <option value="COMPLETED">
+                    Completed
+                </option>
+
+            </select>
+
+        </div>
+
+        <div
+            id="projectForm"
+            class="form-container">
+
+            <h2 id="formTitle">
+                Create New Project
+            </h2>
+
+            <div class="form-group">
+
+                <label for="projectReference">
+                    Project Reference
+                </label>
+
+                <input
+                    type="text"
+                    id="projectReference"
+                    placeholder="e.g. HESI-2026-003">
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="projectName">
+                    Project Name
+                </label>
+
+                <input
+                    type="text"
+                    id="projectName"
+                    placeholder="Project name">
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="location">
+                    Location
+                </label>
+
+                <input
+                    type="text"
+                    id="location"
+                    placeholder="Site location">
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="clientName">
+                    Client
+                </label>
+
+                <input
+                    type="text"
+                    id="clientName"
+                    placeholder="Client name">
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="status">
+                    Status
+                </label>
+
+                <select id="status">
+
+                    <option value="PLANNED">
+                        Planned
+                    </option>
+
+                    <option value="IN_PROGRESS">
+                        In Progress
+                    </option>
+
+                    <option value="COMPLETED">
+                        Completed
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="startDate">
+                    Start Date
+                </label>
+
+                <input
+                    type="date"
+                    id="startDate">
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="targetCompletionDate">
+                    Target Completion Date
+                </label>
+
+                <input
+                    type="date"
+                    id="targetCompletionDate">
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="description">
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    placeholder="Project description"></textarea>
+
+            </div>
+
+            <div class="form-buttons">
+
+                <button onclick="saveProject()">
+                    Save Project
+                </button>
+
+                <button
+                    class="cancel-button"
+                    onclick="hideProjectForm()">
+                    Cancel
+                </button>
+
+            </div>
+
+        </div>
+
+        <div id="projects">
+
+            <p class="loading">
+                Loading projects...
+            </p>
+
+        </div>
+
+    </div>
+
+    <div id="projectDetails">
+
+        <button
+            class="back-button"
+            onclick="showDashboard()">
+            ← Back to Dashboard
+        </button>
+
+        <br>
+        <br>
+
+        <div class="details-card">
+
+            <div
+                id="detailsReference"
+                class="details-reference">
+            </div>
+
+            <h2 id="detailsName"></h2>
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    Location
+                </div>
+
+                <div
+                    id="detailsLocation"
+                    class="detail-value">
+                </div>
+
+            </div>
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    Client
+                </div>
+
+                <div
+                    id="detailsClient"
+                    class="detail-value">
+                </div>
+
+            </div>
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    Status
+                </div>
+
+                <div
+                    id="detailsStatus"
+                    class="detail-value">
+                </div>
+
+            </div>
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    Start Date
+                </div>
+
+                <div
+                    id="detailsStartDate"
+                    class="detail-value">
+                </div>
+
+            </div>
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    Target Completion Date
+                </div>
+
+                <div
+                    id="detailsTargetCompletionDate"
+                    class="detail-value">
+                </div>
+
+            </div>
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    Description
+                </div>
+
+                <div
+                    id="detailsDescription"
+                    class="detail-value">
+                </div>
+
+            </div>
+
+            <div class="investigations-section">
+
+                <div class="investigations-header">
+
+                    <h3>
+                        Site Investigations
+                    </h3>
+
+                    <button onclick="showInvestigationForm()">
+                        + Add Investigation
+                    </button>
+
+                </div>
+
+                <div
+                    id="investigationForm"
+                    class="form-container">
+
+                    <h2 id="investigationFormTitle">
+                        Add Site Investigation
+                    </h2>
+
+                    <div class="form-group">
+
+                        <label for="investigationReference">
+                            Investigation Reference
+                        </label>
+
+                        <input
+                            type="text"
+                            id="investigationReference"
+                            placeholder="e.g. INV-002">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="investigationType">
+                            Investigation Type
+                        </label>
+
+                        <select id="investigationType">
+
+                            <option value="Borehole">
+                                Borehole
+                            </option>
+
+                            <option value="Trial Pit">
+                                Trial Pit
+                            </option>
+
+                            <option value="Window Sample">
+                                Window Sample
+                            </option>
+
+                            <option value="Monitoring">
+                                Monitoring
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="investigationLocation">
+                            Location
+                        </label>
+
+                        <input
+                            type="text"
+                            id="investigationLocation"
+                            placeholder="e.g. North section">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="investigationStatus">
+                            Status
+                        </label>
+
+                        <select id="investigationStatus">
+
+                            <option value="PLANNED">
+                                Planned
+                            </option>
+
+                            <option value="IN_PROGRESS">
+                                In Progress
+                            </option>
+
+                            <option value="COMPLETED">
+                                Completed
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="investigationDate">
+                            Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="investigationDate">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="investigationNotes">
+                            Notes
+                        </label>
+
+                        <textarea
+                            id="investigationNotes"
+                            placeholder="Investigation notes"></textarea>
+
+                    </div>
+
+                    <div class="form-buttons">
+
+                        <button onclick="saveInvestigation()">
+                            Save Investigation
+                        </button>
+
+                        <button
+                            class="cancel-button"
+                            onclick="hideInvestigationForm()">
+                            Cancel
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div id="investigations">
+
+                    <p class="loading">
+                        Loading investigations...
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="details-actions">
+
+                <button
+                    id="detailsEditButton">
+                    Edit Project
+                </button>
+
+                <button
+                    id="detailsDeleteButton"
+                    class="delete-button">
+                    Delete Project
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+<script>
+
+const API_URL =
+    "/api/projects";
+
+const INVESTIGATION_API_URL =
+    "/api/investigations";
+
+let editingProjectId = null;
+let editingInvestigationId = null;
+let currentProjectId = null;
+let allProjects = [];
+let allInvestigations = [];
+let currentUserRole = "STAFF";
+
+
+/* LOAD CURRENT USER ROLE */
+
+async function loadUserRole() {
+
+    try {
+
+        const response =
+            await fetch("/api/user-role");
+
+        if (!response.ok) {
+            throw new Error("Unable to load user role");
+        }
+
+        currentUserRole =
+            await response.text();
+
+        const roleBadge =
+            document.getElementById("roleBadge");
+
+        if (roleBadge) {
+
+            roleBadge.textContent =
+                "LOGGED IN AS " +
+                currentUserRole;
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        currentUserRole = "STAFF";
+    }
+}
+
+
+/* LOGOUT */
+
+async function logout() {
+
+    try {
+
+        await fetch("/logout", {
+            method: "POST"
+        });
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+    }
+
+    window.location.href = "/login.html";
+}
+
+
+/* LOAD PROJECTS */
+
+async function loadProjects() {
+
+    const projectsContainer =
+        document.getElementById("projects");
+
+    try {
+
+        const response =
+            await fetch(API_URL);
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load projects"
+            );
+
+        }
+
+        allProjects =
+            await response.json();
+
+        updateStatistics();
+
+        await loadInvestigationStatistics();
+
+        displayProjects(allProjects);
+
+    }
+
+    catch (error) {
+
+        projectsContainer.innerHTML =
+            `<div class="no-results">
+                Unable to load projects. Please try again.
+            </div>`;
+
+        showToast(
+            "Unable to load projects",
+            "Please try refreshing the dashboard.",
+            "error"
+        );
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* UPDATE PROJECT STATISTICS */
+
+function updateStatistics() {
+
+    document.getElementById(
+        "totalProjects"
+    ).textContent =
+        allProjects.length;
+
+
+    const inProgressCount =
+        allProjects.filter(
+            project =>
+                project.status === "IN_PROGRESS"
+        ).length;
+
+
+    const completedCount =
+        allProjects.filter(
+            project =>
+                project.status === "COMPLETED"
+        ).length;
+
+
+    document.getElementById(
+        "inProgressProjects"
+    ).textContent =
+        inProgressCount;
+
+
+    document.getElementById(
+        "completedProjects"
+    ).textContent =
+        completedCount;
+
+
+    const plannedCount =
+        allProjects.filter(
+            project =>
+                project.status === "PLANNED"
+        ).length;
+
+
+    document.getElementById(
+        "plannedStatusCount"
+    ).textContent =
+        plannedCount;
+
+    document.getElementById(
+        "inProgressStatusCount"
+    ).textContent =
+        inProgressCount;
+
+    document.getElementById(
+        "completedStatusCount"
+    ).textContent =
+        completedCount;
+
+
+    const total =
+        allProjects.length;
+
+
+    document.getElementById(
+        "plannedStatusBar"
+    ).style.width =
+        (total > 0 ? plannedCount / total * 100 : 0) + "%";
+
+    document.getElementById(
+        "inProgressStatusBar"
+    ).style.width =
+        (total > 0 ? inProgressCount / total * 100 : 0) + "%";
+
+    document.getElementById(
+        "completedStatusBar"
+    ).style.width =
+        (total > 0 ? completedCount / total * 100 : 0) + "%";
+
+
+    const onTrackCount =
+        allProjects.filter(
+            project =>
+                getDeadlineStatus(project) === "ON_TRACK"
+        ).length;
+
+    const dueSoonCount =
+        allProjects.filter(
+            project =>
+                getDeadlineStatus(project) === "DUE_SOON"
+        ).length;
+
+    const overdueCount =
+        allProjects.filter(
+            project =>
+                getDeadlineStatus(project) === "OVERDUE"
+        ).length;
+
+
+    document.getElementById(
+        "onTrackProjects"
+    ).textContent =
+        onTrackCount;
+
+    document.getElementById(
+        "dueSoonProjects"
+    ).textContent =
+        dueSoonCount;
+
+    document.getElementById(
+        "overdueProjects"
+    ).textContent =
+        overdueCount;
+
+
+    displayRecentProjects();
+
+}
+
+
+/* LOAD INVESTIGATION STATISTICS */
+
+async function loadInvestigationStatistics() {
+
+    try {
+
+        const response =
+            await fetch(
+                INVESTIGATION_API_URL
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load investigations"
+            );
+
+        }
+
+        const investigations =
+            await response.json();
+
+
+        document.getElementById(
+            "totalInvestigations"
+        ).textContent =
+            investigations.length;
+
+
+        document.getElementById(
+            "plannedInvestigations"
+        ).textContent =
+            investigations.filter(
+                investigation =>
+                    investigation.status === "PLANNED"
+            ).length;
+
+
+        document.getElementById(
+            "investigationsInProgress"
+        ).textContent =
+            investigations.filter(
+                investigation =>
+                    investigation.status === "IN_PROGRESS"
+            ).length;
+
+
+        document.getElementById(
+            "completedInvestigations"
+        ).textContent =
+            investigations.filter(
+                investigation =>
+                    investigation.status === "COMPLETED"
+            ).length;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Unable to load investigation statistics:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ESCAPE HTML */
+
+function escapeHtml(value) {
+
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* DEADLINE HELPERS */
+
+function getDeadlineStatus(project) {
+
+    if (!project.targetCompletionDate) {
+        return "NO_DEADLINE";
+    }
+
+    const targetDate =
+        new Date(project.targetCompletionDate + "T00:00:00");
+
+    const today = new Date();
+
+    today.setHours(0, 0, 0, 0);
+
+    const sevenDaysFromNow = new Date(today);
+
+    sevenDaysFromNow.setDate(
+        today.getDate() + 7
+    );
+
+    if (targetDate < today) {
+        return "OVERDUE";
+    }
+
+    if (targetDate <= sevenDaysFromNow) {
+        return "DUE_SOON";
+    }
+
+    return "ON_TRACK";
+}
+
+
+function getDeadlineLabel(status) {
+
+    switch (status) {
+
+        case "OVERDUE":
+            return "OVERDUE";
+
+        case "DUE_SOON":
+            return "DUE SOON";
+
+        case "ON_TRACK":
+            return "ON TRACK";
+
+        default:
+            return "NO DEADLINE";
+    }
+}
+
+
+function getDeadlineBadgeClass(status) {
+
+    switch (status) {
+
+        case "OVERDUE":
+            return "deadline-overdue-badge";
+
+        case "DUE_SOON":
+            return "deadline-due-soon-badge";
+
+        case "ON_TRACK":
+            return "deadline-on-track-badge";
+
+        default:
+            return "deadline-no-date-badge";
+    }
+}
+
+
+function formatDate(dateValue) {
+
+    if (!dateValue) {
+        return "No date";
+    }
+
+    const date =
+        new Date(dateValue + "T00:00:00");
+
+    return date.toLocaleDateString(
+        "en-GB",
+        {
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+        }
+    );
+}
+
+
+function getDaysUntilDeadline(project) {
+
+    if (!project.targetCompletionDate) {
+        return null;
+    }
+
+    const targetDate =
+        new Date(project.targetCompletionDate + "T00:00:00");
+
+    const today = new Date();
+
+    today.setHours(0, 0, 0, 0);
+
+    const difference =
+        targetDate.getTime() - today.getTime();
+
+    return Math.ceil(
+        difference / (1000 * 60 * 60 * 24)
+    );
+}
+
+
+function getDeadlineMessage(project) {
+
+    const days =
+        getDaysUntilDeadline(project);
+
+    if (days === null) {
+        return "No target completion date";
+    }
+
+    if (days < 0) {
+
+        const overdueDays =
+            Math.abs(days);
+
+        return overdueDays === 1
+            ? "1 day overdue"
+            : `${overdueDays} days overdue`;
+    }
+
+    if (days === 0) {
+        return "Due today";
+    }
+
+    if (days === 1) {
+        return "Due tomorrow";
+    }
+
+    return `${days} days remaining`;
+}
+
+
+/* DISPLAY PROJECTS */
+
+function displayProjects(projects) {
+
+    const projectsContainer =
+        document.getElementById("projects");
+
+    projectsContainer.innerHTML = "";
+
+
+    if (projects.length === 0) {
+
+        projectsContainer.innerHTML = `
+
+            <div class="no-results">
+                No projects match your search.
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    projects.forEach(project => {
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "project-card";
+
+
+        const deadlineStatus =
+            getDeadlineStatus(project);
+
+        const deadlineLabel =
+            getDeadlineLabel(deadlineStatus);
+
+        const deadlineClass =
+            getDeadlineBadgeClass(deadlineStatus);
+
+        const deadlineMessage =
+            getDeadlineMessage(project);
+
+
+        card.innerHTML = `
+
+            <p class="project-reference">
+                ${escapeHtml(
+                    project.projectReference ||
+                    "No reference"
+                )}
+            </p>
+
+            <h3>
+                ${escapeHtml(
+                    project.projectName ||
+                    "Unnamed Project"
+                )}
+            </h3>
+
+            <p>
+                <strong>Location:</strong>
+                ${escapeHtml(
+                    project.location ||
+                    "No location"
+                )}
+            </p>
+
+            <p>
+                <strong>Client:</strong>
+                ${escapeHtml(
+                    project.clientName ||
+                    "No client"
+                )}
+            </p>
+
+            <span class="status">
+                ${escapeHtml(
+                    project.status ||
+                    "UNKNOWN"
+                )}
+            </span>
+
+            <div>
+                <span
+                    class="deadline-badge ${deadlineClass}">
+                    ${deadlineLabel}
+                </span>
+            </div>
+
+            <div class="deadline-info">
+
+                <strong>Target:</strong>
+                ${formatDate(
+                    project.targetCompletionDate
+                )}
+
+                <br>
+
+                ${escapeHtml(
+                    deadlineMessage
+                )}
+
+            </div>
+
+            <div class="project-actions">
+
+                <button
+                    onclick="viewProject(${project.id})">
+                    View Details
+                </button>
+
+                <button
+                    onclick="editProject(${project.id})">
+                    Edit
+                </button>
+
+                ${
+                    currentUserRole === "ADMIN"
+                    ? `
+                        <button
+                            class="delete-button"
+                            onclick="deleteProject(${project.id})">
+                            Delete
+                        </button>
+                    `
+                    : ""
+                }
+
+            </div>
+
+        `;
+
+        projectsContainer.appendChild(card);
+
+    });
+
+}
+
+
+/* DISPLAY RECENT PROJECTS */
+
+function displayRecentProjects() {
+
+    const container =
+        document.getElementById("recentProjectsList");
+
+    if (!container) {
+        return;
+    }
+
+    if (allProjects.length === 0) {
+
+        container.innerHTML =
+            `<p class="loading">
+                No projects available yet.
+            </p>`;
+
+        return;
+    }
+
+    const recentProjects =
+        [...allProjects]
+            .slice(-5)
+            .reverse();
+
+    container.innerHTML = "";
+
+    recentProjects.forEach(project => {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "recent-project";
+
+        item.innerHTML = `
+
+            <div class="recent-project-info">
+
+                <strong>
+                    ${escapeHtml(
+                        project.projectName ||
+                        "Unnamed Project"
+                    )}
+                </strong>
+
+                <span>
+                    ${escapeHtml(
+                        project.projectReference ||
+                        "No reference"
+                    )}
+                    &nbsp; • &nbsp;
+                    ${escapeHtml(
+                        project.location ||
+                        "No location"
+                    )}
+                    &nbsp; • &nbsp;
+                    ${escapeHtml(
+                        project.status ||
+                        "Unknown"
+                    )}
+                </span>
+
+            </div>
+
+            <button
+                onclick="viewProject(${project.id})">
+                View
+            </button>
+
+        `;
+
+        container.appendChild(item);
+    });
+}
+
+
+/* SEARCH AND FILTER */
+
+function filterProjects() {
+
+    const searchTerm =
+        document.getElementById(
+            "searchInput"
+        ).value.toLowerCase();
+
+
+    const selectedStatus =
+        document.getElementById(
+            "statusFilter"
+        ).value;
+
+
+    const filteredProjects =
+        allProjects.filter(project => {
+
+            const matchesSearch =
+
+                project.projectName
+                    .toLowerCase()
+                    .includes(searchTerm)
+
+                ||
+
+                (project.projectReference &&
+                    project.projectReference
+                        .toLowerCase()
+                        .includes(searchTerm))
+
+                ||
+
+                project.location
+                    .toLowerCase()
+                    .includes(searchTerm)
+
+                ||
+
+                project.clientName
+                    .toLowerCase()
+                    .includes(searchTerm);
+
+
+            const matchesStatus =
+                selectedStatus === "ALL"
+                ||
+                project.status === selectedStatus;
+
+
+            return matchesSearch &&
+                   matchesStatus;
+
+        });
+
+
+    displayProjects(filteredProjects);
+
+}
+
+
+/* VIEW PROJECT DETAILS */
+
+async function viewProject(id) {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/${id}`
+            );
+
+
+        if (!response.ok) {
+
+            const message =
+                await getApiErrorMessage(
+                    response,
+                    "The project could not be found."
+                );
+
+            handleHttpError(
+                response,
+                message
+            );
+
+            return;
+        }
+
+
+        const project =
+            await response.json();
+
+
+        currentProjectId =
+            project.id;
+
+
+        document.getElementById(
+            "detailsReference"
+        ).textContent =
+            project.projectReference ||
+            "No reference";
+
+
+        document.getElementById(
+            "detailsName"
+        ).textContent =
+            project.projectName;
+
+
+        document.getElementById(
+            "detailsLocation"
+        ).textContent =
+            project.location;
+
+
+        document.getElementById(
+            "detailsClient"
+        ).textContent =
+            project.clientName;
+
+
+        document.getElementById(
+            "detailsStatus"
+        ).textContent =
+            project.status;
+        document.getElementById(
+            "detailsStartDate"
+        ).textContent =
+            project.startDate ||
+            "No start date";
+
+
+        document.getElementById(
+            "detailsTargetCompletionDate"
+        ).innerHTML = `
+
+            ${escapeHtml(
+                project.targetCompletionDate
+                    ? formatDate(
+                        project.targetCompletionDate
+                    )
+                    : "No target completion date"
+            )}
+
+            <br>
+
+            <span
+                class="deadline-badge ${getDeadlineBadgeClass(
+                    getDeadlineStatus(project)
+                )}">
+                ${getDeadlineLabel(
+                    getDeadlineStatus(project)
+                )}
+            </span>
+
+            <br>
+
+            <small>
+                ${escapeHtml(
+                    getDeadlineMessage(project)
+                )}
+            </small>
+
+        `;
+
+
+
+        document.getElementById(
+            "detailsDescription"
+        ).textContent =
+            project.description ||
+            "No description provided.";
+
+
+        document.getElementById(
+            "detailsEditButton"
+        ).onclick =
+            function() {
+
+                editProject(project.id);
+
+            };
+
+
+        const detailsDeleteButton =
+            document.getElementById(
+                "detailsDeleteButton"
+            );
+
+        if (currentUserRole === "ADMIN") {
+
+            detailsDeleteButton.style.display =
+                "inline-block";
+
+            detailsDeleteButton.onclick =
+                function() {
+
+                    deleteProject(project.id);
+
+                };
+
+        }
+        else {
+
+            detailsDeleteButton.style.display =
+                "none";
+        }
+
+
+        document.getElementById(
+            "dashboard"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "projectDetails"
+        ).style.display =
+            "block";
+
+
+        hideInvestigationForm();
+
+
+        await loadInvestigations(
+            project.id
+        );
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+    catch (error) {
+
+        showToast(
+            "Unable to load project details",
+            "Please try again.",
+            "error"
+        );
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* LOAD INVESTIGATIONS */
+
+async function loadInvestigations(projectId) {
+
+    const container =
+        document.getElementById(
+            "investigations"
+        );
+
+
+    container.innerHTML =
+        "<p class='loading'>Loading investigations...</p>";
+
+
+    try {
+
+        const response =
+            await fetch(
+                INVESTIGATION_API_URL
+            );
+
+
+        if (!response.ok) {
+
+            const message =
+                await getApiErrorMessage(
+                    response,
+                    "Unable to load site investigations."
+                );
+
+            handleHttpError(
+                response,
+                message
+            );
+
+            container.innerHTML =
+                `<div class="no-investigations">
+                    Unable to load site investigations.
+                </div>`;
+
+            return;
+        }
+
+
+        allInvestigations =
+            await response.json();
+
+
+        const projectInvestigations =
+            allInvestigations.filter(
+                investigation =>
+                    investigation.project &&
+                    investigation.project.id === projectId
+            );
+
+
+        displayInvestigations(
+            projectInvestigations
+        );
+
+    }
+
+    catch (error) {
+
+        container.innerHTML =
+            `<div class="no-investigations">
+                Unable to load site investigations.
+            </div>`;
+
+        showToast(
+            "Unable to load investigations",
+            "Please try again.",
+            "error"
+        );
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* DISPLAY INVESTIGATIONS */
+
+function displayInvestigations(investigations) {
+
+    const container =
+        document.getElementById(
+            "investigations"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (investigations.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="no-investigations">
+                No site investigations have been added to this project yet.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    investigations.forEach(investigation => {
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            "investigation-card";
+
+
+        card.innerHTML = `
+
+            <div class="investigation-reference">
+                ${investigation.investigationReference}
+            </div>
+
+            <h4>
+                ${investigation.investigationType}
+            </h4>
+
+            <p>
+                <strong>Location:</strong>
+                ${investigation.location}
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                ${investigation.status}
+            </p>
+
+            <p>
+                <strong>Date:</strong>
+                ${investigation.date || "No date"}
+            </p>
+
+            <p>
+                <strong>Notes:</strong>
+                ${investigation.notes || "No notes"}
+            </p>
+
+            <div class="investigation-actions">
+
+                <button
+                    onclick="editInvestigation(${investigation.id})">
+                    Edit
+                </button>
+
+                ${
+                    currentUserRole === "ADMIN"
+                    ? `
+                        <button
+                            class="delete-button"
+                            onclick="deleteInvestigation(${investigation.id})">
+                            Delete
+                        </button>
+                    `
+                    : ""
+                }
+
+            </div>
+
+        `;
+
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+/* SHOW DASHBOARD */
+
+function showDashboard() {
+
+    document.getElementById(
+        "projectDetails"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "dashboard"
+    ).style.display =
+        "block";
+
+
+    currentProjectId =
+        null;
+
+
+    hideInvestigationForm();
+
+
+    loadProjects();
+
+}
+
+
+/* CREATE PROJECT FORM */
+
+function showCreateForm() {
+
+    editingProjectId =
+        null;
+
+
+    document.getElementById(
+        "formTitle"
+    ).textContent =
+        "Create New Project";
+
+
+    document.getElementById(
+        "projectReference"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "projectName"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "location"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "clientName"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "status"
+    ).value =
+        "PLANNED";
+
+        document.getElementById(
+            "startDate"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "targetCompletionDate"
+        ).value =
+            "";
+
+
+    document.getElementById(
+        "description"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "projectForm"
+    ).style.display =
+        "block";
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* HIDE PROJECT FORM */
+
+function hideProjectForm() {
+
+    document.getElementById(
+        "projectForm"
+    ).style.display =
+        "none";
+
+
+    editingProjectId =
+        null;
+
+}
+
+
+/* EDIT PROJECT */
+
+async function editProject(id) {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/${id}`
+            );
+
+
+        if (!response.ok) {
+
+            const message =
+                await getApiErrorMessage(
+                    response,
+                    "The project could not be found."
+                );
+
+            handleHttpError(
+                response,
+                message
+            );
+
+            return;
+        }
+
+
+        const project =
+            await response.json();
+
+
+        editingProjectId =
+            id;
+
+
+        document.getElementById(
+            "formTitle"
+        ).textContent =
+            "Edit Project";
+
+
+        document.getElementById(
+            "projectReference"
+        ).value =
+            project.projectReference || "";
+
+
+        document.getElementById(
+            "projectName"
+        ).value =
+            project.projectName || "";
+
+
+        document.getElementById(
+            "location"
+        ).value =
+            project.location || "";
+
+
+        document.getElementById(
+            "clientName"
+        ).value =
+            project.clientName || "";
+
+
+        document.getElementById(
+            "status"
+        ).value =
+            project.status || "PLANNED";
+
+        document.getElementById(
+            "startDate"
+        ).value =
+            project.startDate || "";
+
+
+        document.getElementById(
+            "targetCompletionDate"
+        ).value =
+            project.targetCompletionDate || "";
+
+
+        document.getElementById(
+            "description"
+        ).value =
+            project.description || "";
+
+
+        document.getElementById(
+            "projectForm"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "projectDetails"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "dashboard"
+        ).style.display =
+            "block";
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+    catch (error) {
+
+        showToast(
+            "Unable to load project",
+            "Please try again.",
+            "error"
+        );
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* SAVE PROJECT */
+
+async function saveProject() {
+
+    const project = {
+
+        projectReference:
+            document.getElementById(
+                "projectReference"
+            ).value,
+
+        projectName:
+            document.getElementById(
+                "projectName"
+            ).value,
+
+        location:
+            document.getElementById(
+                "location"
+            ).value,
+
+        clientName:
+            document.getElementById(
+                "clientName"
+            ).value,
+
+        status:
+            document.getElementById(
+                "status"
+            ).value,
+
+        startDate:
+            document.getElementById(
+                "startDate"
+            ).value || null,
+
+        targetCompletionDate:
+            document.getElementById(
+                "targetCompletionDate"
+            ).value || null,
+
+
+        description:
+            document.getElementById(
+                "description"
+            ).value
+
+    };
+
+
+    try {
+
+        let response;
+
+
+        if (editingProjectId === null) {
+
+            response =
+                await fetch(
+                    API_URL,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(project)
+                    }
+                );
+
+        }
+
+        else {
+
+            response =
+                await fetch(
+                    `${API_URL}/${editingProjectId}`,
+                    {
+                        method: "PUT",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(project)
+                    }
+                );
+
+        }
+
+
+        if (!response.ok) {
+
+            const message =
+                await getApiErrorMessage(
+                    response,
+                    "The project could not be saved."
+                );
+
+            handleHttpError(
+                response,
+                message
+            );
+
+            return;
+        }
+
+
+        showToast(
+            editingProjectId === null
+                ? "Project created"
+                : "Project updated",
+            editingProjectId === null
+                ? "The project was created successfully."
+                : "The project was updated successfully.",
+            "success"
+        );
+
+
+        hideProjectForm();
+
+
+        loadProjects();
+
+    }
+
+    catch (error) {
+
+        showToast(
+            "Connection error",
+            "Unable to connect to GeoTrack. Please try again.",
+            "error"
+        );
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* DELETE PROJECT */
+
+async function deleteProject(id) {
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete this project?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            const message =
+                await getApiErrorMessage(
+                    response,
+                    "The project could not be deleted."
+                );
+
+            handleHttpError(
+                response,
+                message
+            );
+
+            return;
+        }
+
+
+        showToast(
+            "Project deleted",
+            "The project was deleted successfully.",
+            "success"
+        );
+
+
+        showDashboard();
+
+    }
+
+    catch (error) {
+
+        showToast(
+            "Unable to delete project",
+            "Please try again.",
+            "error"
+        );
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* SHOW INVESTIGATION FORM */
+
+function showInvestigationForm() {
+
+    editingInvestigationId =
+        null;
+
+
+    document.getElementById(
+        "investigationFormTitle"
+    ).textContent =
+        "Add Site Investigation";
+
+
+    document.getElementById(
+        "investigationReference"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "investigationType"
+    ).value =
+        "Borehole";
+
+
+    document.getElementById(
+        "investigationLocation"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "investigationStatus"
+    ).value =
+        "PLANNED";
+
+
+    document.getElementById(
+        "investigationDate"
+    ).value =
+        new Date()
+            .toISOString()
+            .split("T")[0];
+
+
+    document.getElementById(
+        "investigationNotes"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "investigationForm"
+    ).style.display =
+        "block";
+
+}
+
+
+/* HIDE INVESTIGATION FORM */
+
+function hideInvestigationForm() {
+
+    document.getElementById(
+        "investigationForm"
+    ).style.display =
+        "none";
+
+
+    editingInvestigationId =
+        null;
+
+}
+
+
+/* SAVE INVESTIGATION */
+
+async function saveInvestigation() {
+
+    const investigation = {
+
+        investigationReference:
+            document.getElementById(
+                "investigationReference"
+            ).value,
+
+        investigationType:
+            document.getElementById(
+                "investigationType"
+            ).value,
+
+        location:
+            document.getElementById(
+                "investigationLocation"
+            ).value,
+
+        status:
+            document.getElementById(
+                "investigationStatus"
+            ).value,
+
+        date:
+            document.getElementById(
+                "investigationDate"
+            ).value,
+
+        notes:
+            document.getElementById(
+                "investigationNotes"
+            ).value
+
+    };
+
+
+    try {
+
+        let response;
+
+
+        if (editingInvestigationId === null) {
+
+            response =
+                await fetch(
+                    INVESTIGATION_API_URL,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(
+                                investigation
+                            )
+                    }
+                );
+
+        }
+
+        else {
+
+            response =
+                await fetch(
+                    `${INVESTIGATION_API_URL}/${editingInvestigationId}`,
+                    {
+                        method: "PUT",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(
+                                investigation
+                            )
+                    }
+                );
+
+        }
+
+
+        if (!response.ok) {
+
+            const message =
+                await getApiErrorMessage(
+                    response,
+                    "The investigation could not be saved."
+                );
+
+            handleHttpError(
+                response,
+                message
+            );
+
+            return;
+        }
+
+
+        const savedInvestigation =
+            await response.json();
+
+
+        if (
+            editingInvestigationId === null &&
+            currentProjectId !== null
+        ) {
+
+            const assignResponse =
+                await fetch(
+                    `${INVESTIGATION_API_URL}/${savedInvestigation.id}/project/${currentProjectId}`,
+                    {
+                        method: "PUT"
+                    }
+                );
+
+
+            if (!assignResponse.ok) {
+
+                const message =
+                    await getApiErrorMessage(
+                        assignResponse,
+                        "The investigation was created but could not be assigned to this project."
+                    );
+
+                handleHttpError(
+                    assignResponse,
+                    message
+                );
+
+                return;
+            }
+
+        }
+
+
+        showToast(
+            editingInvestigationId === null
+                ? "Investigation created"
+                : "Investigation updated",
+            editingInvestigationId === null
+                ? "The site investigation was created successfully."
+                : "The site investigation was updated successfully.",
+            "success"
+        );
+
+
+        hideInvestigationForm();
+
+
+        await loadInvestigations(
+            currentProjectId
+        );
+
+
+        await loadInvestigationStatistics();
+
+    }
+
+    catch (error) {
+
+        showToast(
+            "Unable to save investigation",
+            error.message ||
+            "Please check your details and try again.",
+            "error"
+        );
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* EDIT INVESTIGATION */
+
+async function editInvestigation(id) {
+
+    try {
+
+        const response =
+            await fetch(
+                `${INVESTIGATION_API_URL}/${id}`
+            );
+
+
+        if (!response.ok) {
+
+            const message =
+                await getApiErrorMessage(
+                    response,
+                    "The investigation could not be found."
+                );
+
+            handleHttpError(
+                response,
+                message
+            );
+
+            return;
+        }
+
+
+        const investigation =
+            await response.json();
+
+
+        editingInvestigationId =
+            id;
+
+
+        document.getElementById(
+            "investigationFormTitle"
+        ).textContent =
+            "Edit Site Investigation";
+
+
+        document.getElementById(
+            "investigationReference"
+        ).value =
+            investigation.investigationReference || "";
+
+
+        document.getElementById(
+            "investigationType"
+        ).value =
+            investigation.investigationType ||
+            "Borehole";
+
+
+        document.getElementById(
+            "investigationLocation"
+        ).value =
+            investigation.location || "";
+
+
+        document.getElementById(
+            "investigationStatus"
+        ).value =
+            investigation.status ||
+            "PLANNED";
+
+
+        document.getElementById(
+            "investigationDate"
+        ).value =
+            investigation.date || "";
+
+
+        document.getElementById(
+            "investigationNotes"
+        ).value =
+            investigation.notes || "";
+
+
+        document.getElementById(
+            "investigationForm"
+        ).style.display =
+            "block";
+
+
+        window.scrollTo({
+            top:
+                document.getElementById(
+                    "investigationForm"
+                ).offsetTop - 30,
+
+            behavior: "smooth"
+        });
+
+    }
+
+    catch (error) {
+
+        showToast(
+            "Unable to load investigation",
+            "Please try again.",
+            "error"
+        );
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* DELETE INVESTIGATION */
+
+async function deleteInvestigation(id) {
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete this investigation?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${INVESTIGATION_API_URL}/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            const message =
+                await getApiErrorMessage(
+                    response,
+                    "The investigation could not be deleted."
+                );
+
+            handleHttpError(
+                response,
+                message
+            );
+
+            return;
+        }
+
+
+        showToast(
+            "Investigation deleted",
+            "The site investigation was deleted successfully.",
+            "success"
+        );
+
+
+        await loadInvestigations(
+            currentProjectId
+        );
+
+
+        await loadInvestigationStatistics();
+
+    }
+
+    catch (error) {
+
+        showToast(
+            "Unable to delete investigation",
+            "Please try again.",
+            "error"
+        );
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* INITIAL LOAD */
+
+async function initializeGeoTrack() {
+
+    await loadUserRole();
+
+    loadProjects();
+}
+
+initializeGeoTrack();
+
+</script>
+
+</body>
+
+</html>
