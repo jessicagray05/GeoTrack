@@ -1,6 +1,7 @@
 package com.jessicagray.geotrack.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -194,5 +195,16 @@ public class SiteInvestigation {
 
         this.project =
                 project;
+    }
+
+
+    @JsonProperty("projectId")
+    public Long getProjectId() {
+
+        if (project == null) {
+            return null;
+        }
+
+        return project.getId();
     }
 }

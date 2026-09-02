@@ -2310,6 +2310,40 @@ async function viewProject(id) {
 }
 
 
+/* GET INVESTIGATION PROJECT ID */
+
+function getInvestigationProjectId(investigation) {
+
+    if (!investigation) {
+        return null;
+    }
+
+    if (
+        investigation.project &&
+        investigation.project.id !== undefined &&
+        investigation.project.id !== null
+    ) {
+        return Number(investigation.project.id);
+    }
+
+    if (
+        investigation.projectId !== undefined &&
+        investigation.projectId !== null
+    ) {
+        return Number(investigation.projectId);
+    }
+
+    if (
+        investigation.project_id !== undefined &&
+        investigation.project_id !== null
+    ) {
+        return Number(investigation.project_id);
+    }
+
+    return null;
+}
+
+
 /* LOAD INVESTIGATIONS */
 
 async function loadInvestigations(projectId) {
@@ -2358,11 +2392,16 @@ async function loadInvestigations(projectId) {
             await response.json();
 
 
+        const selectedProjectId =
+            Number(projectId);
+
+
         const projectInvestigations =
             allInvestigations.filter(
                 investigation =>
-                    investigation.project &&
-                    investigation.project.id === projectId
+                    getInvestigationProjectId(
+                        investigation
+                    ) === selectedProjectId
             );
 
 
@@ -3035,6 +3074,22 @@ function hideInvestigationForm() {
 
 async function saveInvestigation() {
 
+    if (currentProjectId === null) {
+
+        showToast(
+            "No project selected",
+            "Open a project before adding an investigation.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const projectIdForSave =
+        Number(currentProjectId);
+
+
     const investigation = {
 
         investigationReference:
@@ -3141,37 +3196,51 @@ async function saveInvestigation() {
             await response.json();
 
 
-        if (
-            editingInvestigationId === null &&
-            currentProjectId !== null
-        ) {
-
-            const assignResponse =
-                await fetch(
-                    `${INVESTIGATION_API_URL}/${savedInvestigation.id}/project/${currentProjectId}`,
-                    {
-                        method: "PUT"
-                    }
-                );
+        const investigationId =
+            savedInvestigation.id ||
+            editingInvestigationId;
 
 
-            if (!assignResponse.ok) {
+        if (!investigationId) {
 
-                const message =
-                    await getApiErrorMessage(
-                        assignResponse,
-                        "The investigation was created but could not be assigned to this project."
-                    );
+            showToast(
+                "Investigation link failed",
+                "The investigation was saved but GeoTrack could not read its ID.",
+                "error"
+            );
 
-                handleHttpError(
-                    assignResponse,
-                    message
-                );
-
-                return;
-            }
-
+            return;
         }
+
+
+        const assignResponse =
+            await fetch(
+                `${INVESTIGATION_API_URL}/${investigationId}/project/${projectIdForSave}`,
+                {
+                    method: "PUT"
+                }
+            );
+
+
+        if (!assignResponse.ok) {
+
+            const message =
+                await getApiErrorMessage(
+                    assignResponse,
+                    "The investigation was saved but could not be assigned to this project."
+                );
+
+            handleHttpError(
+                assignResponse,
+                message
+            );
+
+            return;
+        }
+
+
+        currentProjectId =
+            projectIdForSave;
 
 
         showToast(
@@ -3179,8 +3248,8 @@ async function saveInvestigation() {
                 ? "Investigation created"
                 : "Investigation updated",
             editingInvestigationId === null
-                ? "The site investigation was created successfully."
-                : "The site investigation was updated successfully.",
+                ? "The site investigation was created and linked to this project."
+                : "The site investigation was updated and kept linked to this project.",
             "success"
         );
 
@@ -3189,7 +3258,7 @@ async function saveInvestigation() {
 
 
         await loadInvestigations(
-            currentProjectId
+            projectIdForSave
         );
 
 
