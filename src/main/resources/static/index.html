@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>G</text></svg>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -669,38 +670,2117 @@
             }
         }
 
-    </style>
+
+        /* =========================================================
+           GEOTRACK DASHBOARD V2
+           Compact dark SaaS layout inspired by geotechnical mapping
+           ========================================================= */
+
+        :root {
+            --gt-bg: #0b0e10;
+            --gt-panel: #121619;
+            --gt-panel-2: #171b1e;
+            --gt-panel-3: #1c2023;
+            --gt-border: #2a3034;
+            --gt-border-soft: #22282c;
+            --gt-text: #f5f6f7;
+            --gt-muted: #90989f;
+            --gt-orange: #ff7200;
+            --gt-orange-soft: #ff9b4a;
+            --gt-green: #6bc77a;
+            --gt-red: #ff5d52;
+            --gt-sidebar: 248px;
+            --gt-topbar: 64px;
+        }
+
+        html {
+            background: var(--gt-bg);
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 72% 10%, rgba(255, 114, 0, 0.08), transparent 28%),
+                linear-gradient(135deg, #0c0f11 0%, #0a0d0f 55%, #0e1113 100%);
+            color: var(--gt-text);
+            font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            left: var(--gt-sidebar);
+            right: 0;
+            top: var(--gt-topbar);
+            height: 270px;
+            pointer-events: none;
+            opacity: .42;
+            background-image: url("data:image/svg+xml,%3Csvg width='900' height='300' viewBox='0 0 900 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ff7200' stroke-width='1' opacity='.38'%3E%3Cpath d='M220 290C280 245 260 205 330 184s108 13 146-31 13-92 91-124 144 5 204-28'/%3E%3Cpath d='M190 290C255 238 230 190 315 162s115 18 151-30 8-102 91-132 156 12 224-21'/%3E%3Cpath d='M160 290C235 229 201 174 297 142s124 21 159-30 4-108 94-139 169 18 243-20'/%3E%3Cpath d='M270 290C322 254 308 222 361 203s93 8 129-26 22-78 86-104 119-2 170-27'/%3E%3Cpath d='M320 290C356 264 350 240 391 224s76 4 108-23 29-62 79-82 96-7 138-25'/%3E%3Cpath d='M410 290C436 270 434 251 463 239s59 1 84-19 27-48 66-63 77-9 110-22'/%3E%3C/g%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 70% top;
+            background-size: 900px 300px;
+            z-index: 0;
+        }
+
+        button {
+            margin-left: 0;
+            border-radius: 9px;
+            background: var(--gt-orange);
+            transition: .18s ease;
+        }
+
+        button:hover {
+            background: #e96700;
+            transform: translateY(-1px);
+        }
+
+        .app-sidebar {
+            position: fixed;
+            inset: 0 auto 0 0;
+            width: var(--gt-sidebar);
+            background: rgba(12, 15, 17, .97);
+            border-right: 1px solid var(--gt-border);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            height: var(--gt-topbar);
+            padding: 15px 24px 12px;
+            border-bottom: 1px solid var(--gt-border);
+        }
+
+        .brand-name {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: .6px;
+            line-height: 1;
+        }
+
+        .brand-name span { color: #fff; }
+        .brand-name strong { color: var(--gt-orange); }
+
+        .brand-subtitle {
+            margin-top: 7px;
+            font-size: 9px;
+            color: #a6adb2;
+            white-space: nowrap;
+        }
+
+        .sidebar-nav {
+            padding: 22px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .nav-item {
+            width: 100%;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 0 14px;
+            color: #c8cdd1;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 114, 0, .08);
+            color: #fff;
+            transform: none;
+        }
+
+        .nav-item.active {
+            color: #fff;
+            background: linear-gradient(90deg, rgba(255,114,0,.27), rgba(255,114,0,.07));
+            border-left: 2px solid var(--gt-orange);
+        }
+
+        .nav-item svg,
+        .section-title svg,
+        .dashboard-date svg,
+        .refresh-button svg,
+        .notification-button svg,
+        .profile-menu-button svg,
+        .topbar-search-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex: 0 0 auto;
+        }
+
+        .nav-item.active svg { color: var(--gt-orange); }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 0 24px 24px;
+            color: #727b81;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            line-height: 1.45;
+        }
+
+        .sidebar-footer svg {
+            width: 150px;
+            height: 58px;
+            fill: none;
+            stroke: #4d565c;
+            stroke-width: 1;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-footer span {
+            display: block;
+            width: 42px;
+            height: 2px;
+            background: var(--gt-orange);
+            margin-top: 14px;
+        }
+
+        .app-topbar {
+            position: fixed;
+            left: var(--gt-sidebar);
+            right: 0;
+            top: 0;
+            height: var(--gt-topbar);
+            padding: 0 28px;
+            background: rgba(13, 16, 18, .9);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--gt-border);
+            z-index: 45;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .topbar-search {
+            width: min(435px, 46vw);
+            height: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 12px;
+            border: 1px solid #343b40;
+            border-radius: 10px;
+            background: rgba(24, 28, 31, .78);
+            color: #9ca4aa;
+        }
+
+        .topbar-search input {
+            flex: 1;
+            min-width: 0;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            color: #e9ecee;
+            font-size: 13px;
+        }
+
+        .topbar-search input::placeholder { color: #7f878d; }
+
+        .search-shortcut {
+            padding: 3px 7px;
+            border: 1px solid #343a3f;
+            border-radius: 6px;
+            font-size: 10px;
+            color: #7f878d;
+        }
+
+        .topbar-profile {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .notification-button,
+        .profile-menu-button {
+            position: relative;
+            padding: 7px;
+            background: transparent;
+            color: #cbd0d3;
+        }
+
+        .notification-button:hover,
+        .profile-menu-button:hover {
+            background: #1c2124;
+            transform: none;
+        }
+
+        .notification-dot {
+            position: absolute;
+            right: 6px;
+            top: 5px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--gt-orange);
+            border: 1px solid #111;
+        }
+
+        .profile-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: var(--gt-orange);
+            color: #111;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .profile-copy {
+            min-width: 94px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .profile-copy strong {
+            font-size: 13px;
+            color: #f7f7f7;
+        }
+
+        .profile-copy span {
+            font-size: 11px;
+            color: #929a9f;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: none;
+            margin: 0 0 0 var(--gt-sidebar);
+            padding: calc(var(--gt-topbar) + 22px) 28px 24px;
+            min-height: 100vh;
+        }
+
+        #dashboard {
+            max-width: 1450px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            min-height: 92px;
+            margin-bottom: 14px;
+            align-items: flex-start;
+        }
+
+        .dashboard-header h2 {
+            color: #fff;
+            font-size: 27px;
+            letter-spacing: -.5px;
+        }
+
+        .welcome-text {
+            color: #a3aaaf;
+            margin: 4px 0 0;
+            font-size: 13px;
+        }
+
+        .welcome-accent {
+            margin-top: 12px;
+            color: var(--gt-orange);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .role-badge {
+            display: none;
+        }
+
+        .dashboard-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-date {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 8px;
+            color: #c2c7ca;
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
+
+        .dashboard-date svg {
+            width: 16px;
+            height: 16px;
+            color: #8d969c;
+        }
+
+        .refresh-button {
+            background: #171c20;
+            border: 1px solid #353c41;
+            color: #e5e8ea;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .refresh-button:hover {
+            background: #20262a;
+        }
+
+        .refresh-button svg { width: 16px; height: 16px; }
+
+        .statistics {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .deadline-statistics {
+            margin-bottom: 14px;
+        }
+
+        .stat-card {
+            position: relative;
+            min-height: 84px;
+            padding: 15px 18px 14px 82px;
+            border-radius: 10px;
+            border: 1px solid var(--gt-border);
+            border-left: 4px solid var(--gt-orange);
+            background: linear-gradient(135deg, rgba(25,29,32,.98), rgba(18,22,25,.98));
+            box-shadow: 0 8px 24px rgba(0,0,0,.16);
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: "";
+            position: absolute;
+            left: 16px;
+            top: 16px;
+            width: 46px;
+            height: 46px;
+            border-radius: 10px;
+            background: rgba(255, 114, 0, .08);
+            border: 1px solid rgba(255, 114, 0, .08);
+        }
+
+        .stat-card::after {
+            content: "";
+            position: absolute;
+            left: 29px;
+            top: 29px;
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--gt-orange);
+            border-radius: 4px;
+            opacity: .95;
+        }
+
+        .stat-card:nth-child(2)::after { border-radius: 50%; }
+        .stat-card:nth-child(3)::after { border-radius: 50%; transform: rotate(-12deg); }
+
+        .deadline-on-track { border-left-color: var(--gt-green); }
+        .deadline-due-soon { border-left-color: #d8a94a; }
+        .deadline-overdue { border-left-color: var(--gt-orange); }
+
+        .stat-card h3 {
+            color: #aeb5ba;
+            font-size: 11px;
+            letter-spacing: .35px;
+            line-height: 1.25;
+        }
+
+        .stat-number {
+            margin-top: 4px;
+            color: #fff;
+            font-size: 26px;
+            line-height: 1;
+        }
+
+        .status-overview,
+        .recent-projects {
+            padding: 17px 18px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--gt-border);
+            border-left: 1px solid var(--gt-border);
+            background: rgba(18,22,25,.94);
+            box-shadow: 0 8px 24px rgba(0,0,0,.14);
+        }
+
+        .status-overview {
+            width: calc(50% - 7px);
+            float: left;
+            min-height: 190px;
+        }
+
+        .recent-projects {
+            width: calc(50% - 7px);
+            float: right;
+            min-height: 190px;
+        }
+
+        .recent-projects::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .status-overview h3,
+        .recent-projects h3 {
+            color: #f5f6f7;
+            margin: 0 0 13px;
+            font-size: 14px;
+        }
+
+        .status-overview h3::before,
+        .recent-projects h3::before {
+            content: "◌";
+            color: var(--gt-orange);
+            margin-right: 8px;
+            font-size: 17px;
+        }
+
+        .status-row {
+            grid-template-columns: 84px 1fr 28px;
+            gap: 10px;
+            margin-bottom: 11px;
+            color: #e4e6e8;
+            font-size: 12px;
+        }
+
+        .status-bar {
+            height: 9px;
+            background: #252b2f;
+        }
+
+        .status-fill {
+            background: linear-gradient(90deg, #ff6500, #ff851d);
+        }
+
+        .recent-project {
+            min-height: 34px;
+            padding: 7px 0;
+            border-bottom-color: #242a2e;
+        }
+
+        .recent-project-info strong {
+            color: #f0f2f3;
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
+
+        .recent-project-info span {
+            color: #838c92;
+            font-size: 10px;
+        }
+
+        .recent-project button {
+            padding: 6px 9px;
+            background: transparent;
+            border: 1px solid #3a4146;
+            color: #bfc5c9;
+            font-size: 10px;
+        }
+
+        .section-heading-row {
+            clear: both;
+            padding-top: 3px;
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title svg {
+            color: var(--gt-orange);
+            width: 18px;
+            height: 18px;
+        }
+
+        .section-title h3 {
+            margin: 0;
+            color: #f4f5f6;
+            font-size: 15px;
+        }
+
+        .search-area {
+            width: 390px;
+            margin: -32px 0 8px auto;
+            gap: 8px;
+        }
+
+        .search-area input,
+        .search-area select {
+            height: 36px;
+            padding: 8px 11px;
+            background: #151a1e;
+            border: 1px solid #343b40;
+            color: #dfe3e5;
+            font-size: 11px;
+        }
+
+        .search-area input::placeholder { color: #7f888e; }
+
+        #projects {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .project-card {
+            position: relative;
+            min-height: 170px;
+            padding: 13px 14px 12px;
+            border-radius: 9px;
+            border: 1px solid var(--gt-border);
+            border-left: 4px solid var(--gt-orange);
+            background: linear-gradient(145deg, #171b1e, #121619);
+            box-shadow: 0 7px 20px rgba(0,0,0,.14);
+        }
+
+        .project-card h3 {
+            color: #f4f5f6;
+            font-size: 13px;
+            line-height: 1.18;
+            margin: 3px 0 8px;
+            min-height: 31px;
+        }
+
+        .project-card p {
+            margin: 4px 0;
+            color: #c0c6ca;
+            font-size: 10.5px;
+            line-height: 1.25;
+        }
+
+        .project-card p strong { color: #e5e8ea; }
+
+        .project-reference {
+            color: var(--gt-orange) !important;
+            font-size: 9px !important;
+            margin-bottom: 2px !important;
+        }
+
+        .status,
+        .deadline-badge {
+            margin-top: 5px;
+            padding: 4px 7px;
+            border-radius: 6px;
+            font-size: 9px;
+            letter-spacing: .3px;
+            background: rgba(255,114,0,.12);
+            color: #ffad69;
+            border: 1px solid rgba(255,114,0,.25);
+        }
+
+        .deadline-on-track-badge {
+            background: rgba(79,171,91,.14);
+            color: #8bd697;
+            border-color: rgba(79,171,91,.25);
+        }
+
+        .deadline-overdue-badge {
+            background: rgba(255,75,65,.13);
+            color: #ff8179;
+            border-color: rgba(255,75,65,.25);
+        }
+
+        .deadline-due-soon-badge {
+            background: rgba(223,159,44,.13);
+            color: #f0be64;
+            border-color: rgba(223,159,44,.25);
+        }
+
+        .deadline-no-date-badge {
+            background: #252b2f;
+            color: #aeb5ba;
+            border-color: #343b40;
+        }
+
+        .deadline-info {
+            margin-top: 7px;
+            padding-top: 7px;
+            border-top-color: #292f33;
+            color: #a5adb2;
+            font-size: 9.5px;
+            line-height: 1.45;
+        }
+
+        .deadline-info strong { color: #dfe2e4; }
+
+        .project-actions {
+            margin-top: 8px;
+            padding-top: 7px;
+            border-top-color: #292f33;
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .project-actions button {
+            padding: 5px 7px;
+            font-size: 9px;
+            border-radius: 6px;
+        }
+
+        .project-actions .delete-button {
+            background: #292e32;
+        }
+
+        .form-container,
+        .details-card {
+            background: #14181b;
+            border-color: var(--gt-orange);
+            color: #e8eaec;
+            box-shadow: 0 12px 30px rgba(0,0,0,.28);
+        }
+
+        .form-container h2,
+        .details-card h2,
+        .investigations-header h3,
+        .detail-value {
+            color: #f5f6f7;
+        }
+
+        .form-group label,
+        .detail-label {
+            color: #aab1b6;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            background: #0f1315;
+            color: #edf0f1;
+            border-color: #343b40;
+        }
+
+        .investigation-card,
+        .no-investigations,
+        .no-results {
+            background: #191e21;
+            color: #c5cbcf;
+            border-color: var(--gt-orange);
+        }
+
+        .investigation-card h4 { color: #f5f6f7; }
+
+        .toast {
+            background: #171c1f;
+            color: #fff;
+            border: 1px solid #30373b;
+            border-left: 4px solid var(--gt-orange);
+        }
+
+        .toast-title { color: #fff; }
+        .toast-message { color: #aab2b7; }
+
+        #projectDetails {
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 1200px) and (min-height: 850px) {
+            body.dashboard-fit main {
+                height: 100vh;
+                overflow-y: auto;
+            }
+        }
+
+        @media (max-width: 1180px) {
+            #projects { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 900px) {
+            :root { --gt-sidebar: 74px; }
+            .brand { padding: 19px 10px; text-align: center; }
+            .brand-name { font-size: 13px; }
+            .brand-subtitle,
+            .nav-item span,
+            .sidebar-footer { display: none; }
+            .sidebar-nav { padding: 20px 9px; }
+            .nav-item { justify-content: center; padding: 0; }
+            .topbar-search { width: min(390px, 55vw); }
+            .profile-copy { display: none; }
+        }
+
+        @media (max-width: 700px) {
+            :root { --gt-sidebar: 0px; --gt-topbar: 58px; }
+            .app-sidebar { display: none; }
+            .app-topbar { left: 0; padding: 0 14px; }
+            .topbar-search { width: calc(100% - 100px); }
+            .search-shortcut { display: none; }
+            main { padding: 76px 14px 24px; }
+            .dashboard-header { flex-direction: column; }
+            .dashboard-actions { width: 100%; justify-content: flex-start; }
+            .dashboard-date { justify-content: flex-start; }
+            .statistics { grid-template-columns: 1fr; }
+            .status-overview,
+            .recent-projects { float: none; width: 100%; }
+            .search-area { width: 100%; margin: 0 0 12px; }
+            #projects { grid-template-columns: 1fr; }
+        }
+
+    
+/* GEOTRACK V3 FUNCTIONAL WORKSPACES */
+.workspace-view{display:none;max-width:1450px;margin:0 auto}
+.workspace-view.active{display:block}
+.workspace-header{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:20px}
+.workspace-header h2{margin:0;color:#fff;font-size:27px}
+.workspace-header p{margin:5px 0 0;color:#939ca2;font-size:13px}
+.workspace-actions,.workspace-search{display:flex;gap:9px}
+.workspace-search{margin-bottom:16px}
+.workspace-search input,.workspace-search select{height:38px;padding:8px 12px;border:1px solid #343b40;border-radius:8px;background:#151a1e;color:#e1e5e7;font-family:inherit}
+.workspace-search input{flex:1}
+.workspace-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.workspace-card{padding:17px;border:1px solid var(--gt-border);border-left:4px solid var(--gt-orange);border-radius:10px;background:linear-gradient(145deg,#171b1e,#121619);color:#dfe3e5}
+.workspace-card-reference{color:var(--gt-orange);font-size:10px;font-weight:800;text-transform:uppercase}
+.workspace-card h3{margin:5px 0 12px;color:#f6f7f8;font-size:15px}
+.workspace-card p{margin:7px 0;color:#aab2b7;font-size:11px;line-height:1.45}
+.workspace-card strong{color:#e8ebed}
+.workspace-card-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;padding-top:11px;border-top:1px solid #292f33}
+.workspace-card-actions button{margin:0;padding:7px 9px;font-size:10px}
+.workspace-empty{grid-column:1/-1;padding:35px;border:1px dashed #343b40;border-radius:10px;color:#8f989e;text-align:center;background:rgba(18,22,25,.72)}
+.investigation-project-pill{display:inline-block;margin-top:7px;padding:4px 7px;border-radius:5px;background:rgba(255,114,0,.11);border:1px solid rgba(255,114,0,.2);color:#ffad69;font-size:9px;font-weight:700}
+.secondary-button{background:#171c20;border:1px solid #353c41;color:#e5e8ea}
+.secondary-button:hover{background:#20262a}
+@media(max-width:1100px){.workspace-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.workspace-header,.workspace-search{flex-direction:column}.workspace-grid{grid-template-columns:1fr}}
+
+/* =========================
+   GEOTRACK CALENDAR
+   ========================= */
+
+.calendar-shell {
+    background: #12171a;
+    border: 1px solid #30383d;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.calendar-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 20px;
+    border-bottom: 1px solid #30383d;
+}
+
+.calendar-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.calendar-toolbar button {
+    height: 36px;
+    padding: 0 13px;
+    border: 1px solid #343c41;
+    border-radius: 7px;
+    background: #191f23;
+    color: #e4e7e9;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.calendar-toolbar button:hover {
+    border-color: #ff7900;
+    color: #ff7900;
+}
+
+.calendar-nav-button {
+    width: 36px;
+    padding: 0 !important;
+    font-size: 20px;
+}
+
+.calendar-month-title {
+    margin: 0;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: #151a1e;
+    border-bottom: 1px solid #30383d;
+}
+
+.calendar-weekday {
+    padding: 12px;
+    text-align: center;
+    color: #8f989e;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-day {
+    position: relative;
+    min-height: 105px;
+    padding: 10px;
+    border-right: 1px solid #252c30;
+    border-bottom: 1px solid #252c30;
+    background: #111619;
+}
+
+.calendar-day:nth-child(7n) {
+    border-right: none;
+}
+
+.calendar-day.other-month {
+    background: #0d1113;
+}
+
+.calendar-day.other-month .calendar-day-number {
+    color: #4f585d;
+}
+
+.calendar-day-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    margin-bottom: 6px;
+    color: #aeb5b9;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.calendar-day.today .calendar-day-number {
+    border-radius: 50%;
+    background: #ff7900;
+    color: #ffffff;
+}
+
+.calendar-event {
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+    padding: 6px 7px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 121, 0, 0.35);
+    border-left: 3px solid #ff7900;
+    border-radius: 5px;
+    background: rgba(255, 121, 0, 0.10);
+    color: #f2f3f4;
+    font-family: inherit;
+    font-size: 10px;
+    line-height: 1.3;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.calendar-event:hover {
+    background: rgba(255, 121, 0, 0.20);
+    border-color: #ff7900;
+}
+
+.calendar-event-reference {
+    color: #ff8a1c;
+    font-weight: 700;
+}
+
+.calendar-legend {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 12px 20px;
+    border-top: 1px solid #30383d;
+    color: #8f989e;
+    font-size: 11px;
+}
+
+.calendar-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.calendar-legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ff7900;
+}
+
+
+/* GEOTRACK CALENDAR - FUNCTIONAL MONTH VIEW */
+.calendar-shell{width:100%}
+.calendar-month-title{min-width:220px;text-align:center}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));grid-auto-rows:minmax(112px,1fr)}
+.calendar-day{min-width:0;min-height:112px}
+.calendar-day.has-events{background:#14191c}
+.calendar-event{appearance:none;margin-left:0}
+@media(min-width:1100px){.calendar-grid{grid-auto-rows:120px}}
+@media(max-width:900px){.calendar-shell{overflow-x:auto}.calendar-weekdays,.calendar-grid{min-width:840px}}
+
+
+/* =========================
+   GEOTRACK REPORTS WORKSPACE
+   ========================= */
+.reports-summary-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:14px;
+    margin-bottom:16px;
+}
+.report-summary-card{
+    min-height:112px;
+    padding:17px;
+    border:1px solid var(--gt-border);
+    border-top:3px solid var(--gt-orange);
+    border-radius:10px;
+    background:linear-gradient(145deg,#171b1e,#121619);
+}
+.report-summary-card span{
+    display:block;
+    color:#8f989e;
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.07em;
+    text-transform:uppercase;
+}
+.report-summary-card strong{
+    display:block;
+    margin-top:8px;
+    color:#fff;
+    font-size:30px;
+    line-height:1;
+}
+.report-summary-card small{
+    display:block;
+    margin-top:8px;
+    color:#747e84;
+    font-size:10px;
+}
+.reports-two-column{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-bottom:14px;
+}
+.report-panel{
+    padding:18px;
+    border:1px solid var(--gt-border);
+    border-radius:10px;
+    background:rgba(18,22,25,.96);
+}
+.report-panel h3{
+    margin:0 0 16px;
+    color:#f5f6f7;
+    font-size:14px;
+}
+.report-panel h3::before{
+    content:"◌";
+    margin-right:8px;
+    color:var(--gt-orange);
+    font-size:17px;
+}
+.report-breakdown-row{
+    display:grid;
+    grid-template-columns:105px 1fr 36px;
+    gap:10px;
+    align-items:center;
+    margin:11px 0;
+    color:#d8dcde;
+    font-size:11px;
+}
+.report-breakdown-track{
+    height:9px;
+    overflow:hidden;
+    border-radius:10px;
+    background:#252b2f;
+}
+.report-breakdown-fill{
+    height:100%;
+    border-radius:10px;
+    background:linear-gradient(90deg,#ff6500,#ff851d);
+}
+.report-breakdown-row strong{
+    color:#fff;
+    text-align:right;
+}
+.report-table-wrap{
+    overflow-x:auto;
+    border:1px solid var(--gt-border);
+    border-radius:10px;
+    background:#121619;
+    margin-bottom:14px;
+}
+.report-table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:780px;
+}
+.report-table th{
+    padding:11px 13px;
+    border-bottom:1px solid #30373b;
+    background:#171c20;
+    color:#8f989e;
+    font-size:9px;
+    letter-spacing:.08em;
+    text-align:left;
+    text-transform:uppercase;
+}
+.report-table td{
+    padding:11px 13px;
+    border-bottom:1px solid #242a2e;
+    color:#cbd0d3;
+    font-size:10.5px;
+}
+.report-table tbody tr:last-child td{border-bottom:0}
+.report-table tbody tr:hover{background:rgba(255,114,0,.035)}
+.report-reference{color:var(--gt-orange);font-weight:800}
+.report-status-pill{
+    display:inline-block;
+    padding:4px 7px;
+    border:1px solid rgba(255,114,0,.22);
+    border-radius:6px;
+    background:rgba(255,114,0,.1);
+    color:#ffad69;
+    font-size:9px;
+    font-weight:700;
+}
+.report-deadline-overdue{color:#ff8179;font-weight:700}
+.report-deadline-due-soon{color:#f0be64;font-weight:700}
+.report-deadline-on-track{color:#8bd697;font-weight:700}
+.report-muted{color:#788188}
+.report-section-heading{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin:18px 0 9px;
+}
+.report-section-heading h3{
+    margin:0;
+    color:#f4f5f6;
+    font-size:15px;
+}
+.report-section-heading span{
+    color:#7f888e;
+    font-size:10px;
+}
+.report-generated{
+    margin-top:4px;
+    color:#737d83;
+    font-size:10px;
+}
+@media(max-width:1100px){
+    .reports-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .reports-two-column{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+    .reports-summary-grid{grid-template-columns:1fr}
+}
+@media print{
+    .app-sidebar,.app-topbar,.workspace-actions{display:none!important}
+    body,html{background:#fff!important;color:#111!important}
+    body::before{display:none!important}
+    main{margin:0!important;padding:18px!important}
+    #reportsWorkspace{display:block!important;max-width:none!important}
+    #reportsWorkspace .workspace-header h2,
+    #reportsWorkspace .report-panel h3,
+    #reportsWorkspace .report-section-heading h3,
+    #reportsWorkspace .report-summary-card strong{color:#111!important}
+    #reportsWorkspace .report-summary-card,
+    #reportsWorkspace .report-panel,
+    #reportsWorkspace .report-table-wrap{background:#fff!important;border-color:#bbb!important}
+    #reportsWorkspace .report-table th{background:#eee!important;color:#333!important}
+    #reportsWorkspace .report-table td,
+    #reportsWorkspace .report-breakdown-row{color:#222!important}
+}
+
+
+/* =========================
+   GEOTRACK CLIENTS, SITES & SETTINGS
+   ========================= */
+.directory-summary-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:14px;
+    margin-bottom:16px;
+}
+.directory-summary-card{
+    padding:17px;
+    border:1px solid var(--gt-border);
+    border-left:4px solid var(--gt-orange);
+    border-radius:10px;
+    background:linear-gradient(145deg,#171b1e,#121619);
+}
+.directory-summary-card span{
+    display:block;
+    color:#8f989e;
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.07em;
+    text-transform:uppercase;
+}
+.directory-summary-card strong{
+    display:block;
+    margin-top:7px;
+    color:#fff;
+    font-size:27px;
+}
+.directory-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:14px;
+}
+.directory-card{
+    padding:17px;
+    border:1px solid var(--gt-border);
+    border-top:3px solid var(--gt-orange);
+    border-radius:10px;
+    background:linear-gradient(145deg,#171b1e,#121619);
+}
+.directory-card h3{
+    margin:0 0 6px;
+    color:#f6f7f8;
+    font-size:15px;
+}
+.directory-card-subtitle{
+    margin-bottom:13px;
+    color:#858e94;
+    font-size:10px;
+}
+.directory-card-stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:7px;
+    margin-bottom:13px;
+}
+.directory-mini-stat{
+    padding:9px;
+    border:1px solid #2b3236;
+    border-radius:8px;
+    background:#111619;
+}
+.directory-mini-stat strong{
+    display:block;
+    color:#fff;
+    font-size:16px;
+}
+.directory-mini-stat span{
+    display:block;
+    margin-top:3px;
+    color:#7f888e;
+    font-size:8px;
+    text-transform:uppercase;
+}
+.directory-project-list{
+    margin-top:11px;
+    padding-top:10px;
+    border-top:1px solid #292f33;
+}
+.directory-project-row{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:7px 0;
+    border-bottom:1px solid #23292d;
+    color:#c4cacf;
+    font-size:10px;
+}
+.directory-project-row:last-child{border-bottom:0}
+.directory-project-row strong{color:var(--gt-orange);font-size:9px}
+.directory-search{
+    display:flex;
+    gap:9px;
+    margin-bottom:16px;
+}
+.directory-search input{
+    width:100%;
+    height:38px;
+    padding:8px 12px;
+    border:1px solid #343b40;
+    border-radius:8px;
+    outline:0;
+    background:#151a1e;
+    color:#e1e5e7;
+    font-family:inherit;
+}
+.directory-search input:focus{border-color:var(--gt-orange)}
+.settings-layout{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+.settings-panel{
+    padding:20px;
+    border:1px solid var(--gt-border);
+    border-radius:10px;
+    background:rgba(18,22,25,.96);
+}
+.settings-panel.full-width{grid-column:1/-1}
+.settings-panel h3{
+    margin:0 0 5px;
+    color:#f5f6f7;
+    font-size:15px;
+}
+.settings-panel > p{
+    margin:0 0 17px;
+    color:#858e94;
+    font-size:11px;
+    line-height:1.5;
+}
+.settings-profile{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:14px;
+    border:1px solid #2b3236;
+    border-radius:9px;
+    background:#111619;
+}
+.settings-avatar{
+    width:52px;
+    height:52px;
+    display:grid;
+    place-items:center;
+    flex:0 0 auto;
+    border-radius:50%;
+    background:var(--gt-orange);
+    color:#111;
+    font-weight:900;
+}
+.settings-profile strong{display:block;color:#fff;font-size:14px}
+.settings-profile span{display:block;margin-top:4px;color:#8b949a;font-size:10px}
+.settings-field{
+    margin-top:13px;
+}
+.settings-field label{
+    display:block;
+    margin-bottom:6px;
+    color:#aeb5ba;
+    font-size:10px;
+    font-weight:700;
+}
+.settings-field input,.settings-field select{
+    width:100%;
+    height:38px;
+    padding:8px 11px;
+    border:1px solid #343b40;
+    border-radius:8px;
+    background:#0f1315;
+    color:#edf0f1;
+    font-family:inherit;
+}
+.settings-field input:disabled,.settings-field select:disabled{
+    opacity:.62;
+    cursor:not-allowed;
+}
+.settings-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:16px;
+}
+.settings-note{
+    margin-top:14px;
+    padding:11px 12px;
+    border:1px solid rgba(255,114,0,.2);
+    border-radius:8px;
+    background:rgba(255,114,0,.07);
+    color:#b9c0c4;
+    font-size:10px;
+    line-height:1.5;
+}
+.settings-feature-list{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:9px;
+}
+.settings-feature{
+    padding:12px;
+    border:1px solid #2b3236;
+    border-radius:8px;
+    background:#111619;
+}
+.settings-feature strong{
+    display:block;
+    color:#e9ecee;
+    font-size:11px;
+}
+.settings-feature span{
+    display:block;
+    margin-top:4px;
+    color:#7f888e;
+    font-size:9px;
+    line-height:1.4;
+}
+.settings-ready{
+    display:inline-block;
+    margin-top:8px;
+    padding:3px 6px;
+    border-radius:5px;
+    background:rgba(107,199,122,.12);
+    color:#8bd697;
+    font-size:8px;
+    font-weight:800;
+}
+.settings-backend{
+    display:inline-block;
+    margin-top:8px;
+    padding:3px 6px;
+    border-radius:5px;
+    background:rgba(255,114,0,.11);
+    color:#ffad69;
+    font-size:8px;
+    font-weight:800;
+}
+@media(max-width:1100px){
+    .directory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:800px){
+    .directory-summary-grid,.directory-grid,.settings-layout,.settings-feature-list{grid-template-columns:1fr}
+    .settings-panel.full-width{grid-column:auto}
+}
+
+
+/* =========================
+   GEOTRACK WORKING ACCOUNT SETTINGS
+   ========================= */
+.account-settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.account-settings-card{padding:20px;border:1px solid var(--gt-border);border-radius:11px;background:linear-gradient(145deg,#171b1e,#121619);color:#dfe3e5}
+.account-settings-card h3{margin:5px 0 7px;color:#fff;font-size:17px}
+.account-settings-kicker{color:var(--gt-orange);font-size:9px;font-weight:800;letter-spacing:.1em}
+.account-settings-description{margin:0 0 18px;color:#8f989e;font-size:11px;line-height:1.55}
+.account-settings-heading{display:flex;align-items:center;gap:14px;padding-bottom:17px;border-bottom:1px solid #292f33}
+.account-settings-heading p{margin:0;color:#899298;font-size:11px}
+.account-settings-icon{width:50px;height:50px;display:grid;place-items:center;flex:0 0 auto;border-radius:50%;background:var(--gt-orange);color:#111;font-size:13px;font-weight:900}
+.account-details-list{margin-top:8px}
+.account-detail-row{display:flex;justify-content:space-between;gap:18px;padding:12px 0;border-bottom:1px solid #252b2f;font-size:11px}
+.account-detail-row span{color:#858e94}
+.account-detail-row strong{color:#e7eaec;text-align:right;overflow-wrap:anywhere}
+.account-status-active{color:#8bd697!important}
+.account-status-disabled{color:#ff8179!important}
+.account-settings-note{margin-top:15px;padding:11px 12px;border:1px solid rgba(255,114,0,.18);border-radius:7px;background:rgba(255,114,0,.055);color:#a9b0b4;font-size:9.5px;line-height:1.55}
+.account-form-group{margin-bottom:14px}
+.account-form-group label{display:block;margin-bottom:7px;color:#aab1b6;font-size:9px;font-weight:800;letter-spacing:.06em}
+.account-form-group input{width:100%;height:41px;padding:9px 11px;border:1px solid #343b40;border-radius:8px;outline:none;background:#0f1315;color:#edf0f1;font-family:inherit}
+.account-form-group input:focus{border-color:var(--gt-orange);box-shadow:0 0 0 3px rgba(255,114,0,.07)}
+.account-form-message{display:none;margin:0 0 13px;padding:10px 11px;border-radius:7px;font-size:10px;line-height:1.45}
+.account-form-message.success{display:block;color:#8bd697;border:1px solid rgba(107,199,122,.24);background:rgba(107,199,122,.07)}
+.account-form-message.error{display:block;color:#ff8179;border:1px solid rgba(255,93,82,.24);background:rgba(255,93,82,.07)}
+.account-session-card{grid-column:1/-1}
+@media(max-width:850px){.account-settings-grid{grid-template-columns:1fr}.account-session-card{grid-column:auto}}
+
+
+
+/* =========================
+   GEOTRACK PROFILE DROPDOWN
+   ========================= */
+.topbar-profile{position:relative}
+.profile-dropdown{
+    position:absolute;
+    top:52px;
+    right:0;
+    width:190px;
+    display:none;
+    padding:7px;
+    border:1px solid #343b40;
+    border-radius:10px;
+    background:#151a1e;
+    box-shadow:0 16px 38px rgba(0,0,0,.38);
+    z-index:200;
+}
+.profile-dropdown.open{display:block}
+.profile-dropdown button{
+    width:100%;
+    margin:0;
+    padding:10px 11px;
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    border:0;
+    border-radius:7px;
+    background:transparent;
+    color:#e5e8ea;
+    font-size:11px;
+    text-align:left;
+}
+.profile-dropdown button:hover{
+    background:rgba(255,114,0,.10);
+    color:#fff;
+    transform:none;
+}
+.profile-dropdown .profile-dropdown-danger{color:#ff9b94}
+.profile-menu-button.menu-open{
+    background:#1c2124;
+    color:var(--gt-orange);
+}
+
+/* =========================
+   GEOTRACK TEAM MANAGEMENT
+   ========================= */
+.team-management-card{grid-column:1/-1}
+.team-management-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    margin-bottom:17px;
+}
+.team-management-header p{margin:4px 0 0;color:#8f989e;font-size:11px;line-height:1.5}
+.team-invite-form{
+    display:grid;
+    grid-template-columns:1fr 1fr auto;
+    gap:9px;
+    align-items:end;
+    padding:14px;
+    margin-bottom:16px;
+    border:1px solid #2b3236;
+    border-radius:9px;
+    background:#111619;
+}
+.team-invite-form .account-form-group{margin:0}
+.team-invite-form button{height:41px;white-space:nowrap}
+.team-section-title{
+    margin:17px 0 9px;
+    color:#f2f4f5;
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+}
+.team-list{
+    overflow:hidden;
+    border:1px solid #2b3236;
+    border-radius:9px;
+    background:#111619;
+}
+.team-row{
+    display:grid;
+    grid-template-columns:minmax(160px,1.3fr) minmax(190px,1.5fr) 90px 90px;
+    gap:12px;
+    align-items:center;
+    padding:11px 13px;
+    border-bottom:1px solid #252b2f;
+    font-size:10px;
+}
+.team-row:last-child{border-bottom:0}
+.team-row strong{color:#eef0f1;font-size:11px}
+.team-row span{color:#8f989e;overflow-wrap:anywhere}
+.team-role-pill,.team-status-pill{
+    justify-self:start;
+    padding:4px 7px;
+    border-radius:6px;
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:.04em;
+}
+.team-role-pill{
+    border:1px solid rgba(255,114,0,.23);
+    background:rgba(255,114,0,.09);
+    color:#ffad69!important;
+}
+.team-status-pill.active{
+    border:1px solid rgba(107,199,122,.23);
+    background:rgba(107,199,122,.08);
+    color:#8bd697!important;
+}
+.team-status-pill.pending{
+    border:1px solid rgba(240,190,100,.23);
+    background:rgba(240,190,100,.08);
+    color:#f0be64!important;
+}
+.team-empty{padding:18px;color:#7f888e;font-size:10px;text-align:center}
+.invitation-link-box{
+    display:none;
+    margin:0 0 16px;
+    padding:12px;
+    border:1px solid rgba(255,114,0,.25);
+    border-radius:8px;
+    background:rgba(255,114,0,.07);
+}
+.invitation-link-box.show{display:block}
+.invitation-link-box strong{display:block;margin-bottom:7px;color:#ffad69;font-size:10px}
+.invitation-link-line{display:flex;gap:8px}
+.invitation-link-line input{
+    flex:1;
+    min-width:0;
+    height:37px;
+    padding:8px 10px;
+    border:1px solid #343b40;
+    border-radius:7px;
+    background:#0f1315;
+    color:#dfe3e5;
+    font-size:10px;
+}
+.invitation-link-line button{padding:8px 11px;font-size:9px}
+@media(max-width:850px){
+    .team-invite-form{grid-template-columns:1fr}
+    .team-row{grid-template-columns:1fr}
+    .team-management-header{flex-direction:column}
+}
+
+/* GEOTRACK PROJECT / INVESTIGATION FORM READABILITY FIX */
+.form-container .form-group input,
+.form-container .form-group select,
+.form-container .form-group textarea {
+    background: #ffffff;
+    color: #111111;
+    caret-color: #111111;
+}
+
+.form-container .form-group input:focus,
+.form-container .form-group select:focus,
+.form-container .form-group textarea:focus {
+    background: #ffffff;
+    color: #111111;
+    caret-color: #111111;
+    border-color: var(--gt-orange);
+}
+
+.form-container .form-group input::placeholder,
+.form-container .form-group textarea::placeholder {
+    color: #6f767b;
+}
+
+.form-container .form-group select option {
+    background: #ffffff;
+    color: #111111;
+}
+
+</style>
 </head>
 
 <body>
 
 <div id="toastContainer" class="toast-container"></div>
 
-<header>
-
-    <div class="header-content">
-
-        <div>
-            <h1>GEOTRACK</h1>
-
-            <p>
-                Geotechnical Project Management System
-            </p>
-        </div>
-
-        <button
-            class="logout-button"
-            onclick="logout()">
-            Logout
-        </button>
-
+<aside class="app-sidebar">
+    <div class="brand">
+        <div class="brand-name"><span>GEO</span><strong>TRACK</strong></div>
+        <div class="brand-subtitle">Geotechnical Project Management</div>
     </div>
 
+    <nav class="sidebar-nav">
+        <button class="nav-item active" type="button" onclick="openWorkspace('dashboard', this)">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 11l9-8 9 8"></path><path d="M5 10v10h14V10"></path><path d="M9 20v-6h6v6"></path>
+            </svg>
+            <span>Dashboard</span>
+        </button>
+
+        <button class="nav-item" type="button" onclick="openWorkspace('projects', this)">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 6h7l2 2h9v11H3z"></path><path d="M3 6V4h7l2 2"></path>
+            </svg>
+            <span>Projects</span>
+        </button>
+
+        <button class="nav-item" type="button" onclick="openWorkspace('investigations', this)">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="7"></circle><circle cx="12" cy="12" r="2"></circle>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path>
+            </svg>
+            <span>Investigations</span>
+        </button>
+<button class="nav-item" type="button" onclick="openWorkspace('calendar', this)">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M7 3v4M17 3v4M3 10h18"></path>
+            </svg>
+            <span>Calendar</span>
+        </button>
+
+        <button class="nav-item" type="button" onclick="openWorkspace('reports', this)">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path>
+            </svg>
+            <span>Reports</span>
+        </button>
+
+        <button class="nav-item" type="button" onclick="openWorkspace('clients', this)">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="9" cy="8" r="3"></circle><circle cx="17" cy="9" r="2"></circle>
+                <path d="M3 20v-2a5 5 0 0 1 10 0v2M14 20v-1a4 4 0 0 1 7-2.5"></path>
+            </svg>
+            <span>Clients</span>
+        </button>
+
+        <button class="nav-item" type="button" onclick="openWorkspace('sites', this)">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0z"></path><circle cx="12" cy="10" r="2.5"></circle>
+            </svg>
+            <span>Sites</span>
+        </button>
+
+        <button class="nav-item" type="button" onclick="openWorkspace('settings', this)">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21h-4v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H3v-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V3h4v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.1v4H21a1.7 1.7 0 0 0-1.6 1z"></path>
+            </svg>
+            <span>Settings</span>
+        </button>
+    </nav>
+
+    <div class="sidebar-footer">
+        <svg viewBox="0 0 180 58" aria-hidden="true">
+            <path d="M5 52L35 26l18 15 22-31 25 30 16-13 29 25"></path>
+            <path d="M5 52h145"></path>
+            <path d="M31 31l10 21M75 10l7 42M116 27l9 25"></path>
+        </svg>
+        <div>GROUND INSIGHTS</div>
+        <div>REAL PROGRESS</div>
+        <span></span>
+    </div>
+</aside>
+
+
+
+<header class="app-topbar">
+    <div class="topbar-search">
+        <span class="topbar-search-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="M20 20l-3.5-3.5"></path>
+            </svg>
+        </span>
+        <input
+            type="text"
+            id="topSearchInput"
+            placeholder="Search projects, sites, or clients..."
+            oninput="syncTopSearch()">
+        <span class="search-shortcut">⌘ K</span>
+    </div>
+
+    <div class="topbar-profile">
+        <button class="notification-button" type="button" aria-label="Notifications"
+            onclick="showToast('Notifications', 'Notification centre can be added next.', 'warning')">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                <path d="M10 21h4"></path>
+            </svg>
+            <span class="notification-dot"></span>
+        </button>
+
+        <div class="profile-avatar" id="profileAvatar">JG</div>
+
+        <div class="profile-copy">
+            <strong id="profileName">Jessica Gray</strong>
+            <span id="profileRole">Admin</span>
+        </div>
+
+        <button id="profileMenuButton" class="profile-menu-button" type="button"
+            aria-label="Account menu" aria-expanded="false"
+            onclick="toggleProfileMenu(event)">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"></path>
+            </svg>
+        </button>
+
+        <div id="profileDropdown" class="profile-dropdown">
+            <button type="button" onclick="openSettingsFromProfile()">
+                Account Settings
+            </button>
+            <button class="profile-dropdown-danger" type="button" onclick="logout()">
+                Log Out
+            </button>
+        </div>
+    </div>
 </header>
+
 
 <main>
 
-    <div id="dashboard">
+    <!-- =========================
+     CALENDAR WORKSPACE
+     ========================= -->
+<div id="calendarWorkspace" class="workspace-view">
+    <div class="workspace-header">
+        <div>
+            <h2>Calendar</h2>
+            <p>View project target completion dates in a monthly schedule</p>
+        </div>
+    </div>
+
+    <div class="calendar-shell">
+        <div class="calendar-toolbar">
+            <div class="calendar-toolbar-left">
+                <button class="calendar-nav-button" type="button" onclick="changeCalendarMonth(-1)" aria-label="Previous month">‹</button>
+                <button type="button" onclick="calendarToday()">Today</button>
+                <button class="calendar-nav-button" type="button" onclick="changeCalendarMonth(1)" aria-label="Next month">›</button>
+            </div>
+            <h3 id="calendarMonthTitle" class="calendar-month-title">Calendar</h3>
+            <div></div>
+        </div>
+
+        <div class="calendar-weekdays">
+            <div class="calendar-weekday">Monday</div>
+            <div class="calendar-weekday">Tuesday</div>
+            <div class="calendar-weekday">Wednesday</div>
+            <div class="calendar-weekday">Thursday</div>
+            <div class="calendar-weekday">Friday</div>
+            <div class="calendar-weekday">Saturday</div>
+            <div class="calendar-weekday">Sunday</div>
+        </div>
+
+        <div id="calendarGrid" class="calendar-grid"></div>
+
+        <div class="calendar-legend">
+            <div class="calendar-legend-item">
+                <span class="calendar-legend-dot"></span>
+                Project Target Completion
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- =========================
+     REPORTS WORKSPACE
+     ========================= -->
+<div id="reportsWorkspace" class="workspace-view">
+
+    <div class="workspace-header">
+        <div>
+            <h2>Reports</h2>
+            <p>Live project, deadline and site investigation reporting</p>
+            <div id="reportGeneratedAt" class="report-generated">Preparing report…</div>
+        </div>
+
+        <div class="workspace-actions">
+            <button class="secondary-button" type="button" onclick="renderReports()">Refresh</button>
+            <button class="secondary-button" type="button" onclick="downloadReportsCsv()">Export CSV</button>
+            <button type="button" onclick="printReports()">Print Report</button>
+        </div>
+    </div>
+
+    <div class="reports-summary-grid">
+        <div class="report-summary-card">
+            <span>Total Projects</span>
+            <strong id="reportTotalProjects">0</strong>
+            <small>All projects currently held in GeoTrack</small>
+        </div>
+        <div class="report-summary-card">
+            <span>In Progress</span>
+            <strong id="reportInProgressProjects">0</strong>
+            <small>Projects currently being delivered</small>
+        </div>
+        <div class="report-summary-card">
+            <span>Overdue</span>
+            <strong id="reportOverdueProjects">0</strong>
+            <small>Active projects beyond target completion</small>
+        </div>
+        <div class="report-summary-card">
+            <span>Investigations</span>
+            <strong id="reportTotalInvestigations">0</strong>
+            <small>Site investigations across all projects</small>
+        </div>
+    </div>
+
+    <div class="reports-two-column">
+        <section class="report-panel">
+            <h3>Project Status Breakdown</h3>
+            <div id="reportProjectStatusBreakdown"></div>
+        </section>
+
+        <section class="report-panel">
+            <h3>Deadline Health</h3>
+            <div id="reportDeadlineBreakdown"></div>
+        </section>
+    </div>
+
+    <div class="reports-two-column">
+        <section class="report-panel">
+            <h3>Investigation Status</h3>
+            <div id="reportInvestigationBreakdown"></div>
+        </section>
+
+        <section class="report-panel">
+            <h3>Client Activity</h3>
+            <div id="reportClientBreakdown"></div>
+        </section>
+    </div>
+
+    <div class="report-section-heading">
+        <h3>Project Deadline Report</h3>
+        <span>Automatically generated from project target completion dates</span>
+    </div>
+
+    <div class="report-table-wrap">
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th>Reference</th>
+                    <th>Project</th>
+                    <th>Client</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Target Date</th>
+                    <th>Deadline Health</th>
+                </tr>
+            </thead>
+            <tbody id="reportProjectsTable"></tbody>
+        </table>
+    </div>
+
+    <div class="report-section-heading">
+        <h3>Site Investigation Report</h3>
+        <span>Current investigations and linked projects</span>
+    </div>
+
+    <div class="report-table-wrap">
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th>Reference</th>
+                    <th>Type</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Linked Project</th>
+                </tr>
+            </thead>
+            <tbody id="reportInvestigationsTable"></tbody>
+        </table>
+    </div>
+
+</div>
+
+
+<!-- =========================
+     CLIENTS WORKSPACE
+     ========================= -->
+<div id="clientsWorkspace" class="workspace-view">
+    <div class="workspace-header">
+        <div>
+            <h2>Clients</h2>
+            <p>Client directory generated from your GeoTrack project records</p>
+        </div>
+        <div class="workspace-actions">
+            <button class="secondary-button" type="button" onclick="renderClientsWorkspace()">Refresh</button>
+        </div>
+    </div>
+
+    <div class="directory-summary-grid">
+        <div class="directory-summary-card">
+            <span>Total Clients</span>
+            <strong id="clientsTotalCount">0</strong>
+        </div>
+        <div class="directory-summary-card">
+            <span>Active Client Projects</span>
+            <strong id="clientsActiveProjects">0</strong>
+        </div>
+        <div class="directory-summary-card">
+            <span>Completed Client Projects</span>
+            <strong id="clientsCompletedProjects">0</strong>
+        </div>
+    </div>
+
+    <div class="directory-search">
+        <input id="clientDirectorySearch" type="search"
+               placeholder="Search clients or their projects..."
+               oninput="renderClientsWorkspace()">
+    </div>
+
+    <div id="clientsDirectoryGrid" class="directory-grid"></div>
+</div>
+
+
+<!-- =========================
+     SITES WORKSPACE
+     ========================= -->
+<div id="sitesWorkspace" class="workspace-view">
+    <div class="workspace-header">
+        <div>
+            <h2>Sites</h2>
+            <p>Site directory generated from project and investigation locations</p>
+        </div>
+        <div class="workspace-actions">
+            <button class="secondary-button" type="button" onclick="renderSitesWorkspace()">Refresh</button>
+        </div>
+    </div>
+
+    <div class="directory-summary-grid">
+        <div class="directory-summary-card">
+            <span>Total Sites</span>
+            <strong id="sitesTotalCount">0</strong>
+        </div>
+        <div class="directory-summary-card">
+            <span>Project Locations</span>
+            <strong id="sitesProjectLocations">0</strong>
+        </div>
+        <div class="directory-summary-card">
+            <span>Investigation Locations</span>
+            <strong id="sitesInvestigationLocations">0</strong>
+        </div>
+    </div>
+
+    <div class="directory-search">
+        <input id="siteDirectorySearch" type="search"
+               placeholder="Search site locations..."
+               oninput="renderSitesWorkspace()">
+    </div>
+
+    <div id="sitesDirectoryGrid" class="directory-grid"></div>
+</div>
+
+
+<!-- =========================
+     SETTINGS WORKSPACE
+     ========================= -->
+<div id="settingsWorkspace" class="workspace-view">
+    <div class="workspace-header">
+        <div>
+            <h2>Settings</h2>
+            <p>Manage your GeoTrack account, security and session.</p>
+        </div>
+        <div class="workspace-actions">
+            <button class="secondary-button" type="button" onclick="loadAccountSettings()">Refresh Account</button>
+            <button type="button" onclick="logout()">Log Out</button>
+        </div>
+    </div>
+
+    <div class="account-settings-grid">
+        <section class="account-settings-card">
+            <div class="account-settings-heading">
+                <div class="account-settings-icon" id="settingsAccountAvatar">GT</div>
+                <div>
+                    <span class="account-settings-kicker">MY ACCOUNT</span>
+                    <h3 id="settingsAccountName">Loading account...</h3>
+                    <p id="settingsAccountEmail">Please wait</p>
+                </div>
+            </div>
+
+            <div class="account-details-list">
+                <div class="account-detail-row">
+                    <span>Full name</span>
+                    <strong id="settingsFullName">—</strong>
+                </div>
+                <div class="account-detail-row">
+                    <span>Email / login</span>
+                    <strong id="settingsEmail">—</strong>
+                </div>
+                <div class="account-detail-row">
+                    <span>Security role</span>
+                    <strong id="settingsRole">—</strong>
+                </div>
+                <div class="account-detail-row">
+                    <span>Account status</span>
+                    <strong id="settingsStatus">—</strong>
+                </div>
+            </div>
+
+            <div class="account-settings-note">
+                Your security role is controlled by GeoTrack. The first user who creates a company is ADMIN; invited team members receive STAFF access.
+            </div>
+        </section>
+
+        <section class="account-settings-card">
+            <span class="account-settings-kicker">SECURITY</span>
+            <h3>Change Password</h3>
+            <p class="account-settings-description">
+                Confirm your current password, then choose a new password with at least 8 characters.
+            </p>
+
+            <form id="changePasswordForm" onsubmit="changeAccountPassword(event)">
+                <div class="account-form-group">
+                    <label for="settingsCurrentPassword">CURRENT PASSWORD</label>
+                    <input id="settingsCurrentPassword" type="password" autocomplete="current-password" required>
+                </div>
+
+                <div class="account-form-group">
+                    <label for="settingsNewPassword">NEW PASSWORD</label>
+                    <input id="settingsNewPassword" type="password" autocomplete="new-password" minlength="8" required>
+                </div>
+
+                <div class="account-form-group">
+                    <label for="settingsConfirmPassword">CONFIRM NEW PASSWORD</label>
+                    <input id="settingsConfirmPassword" type="password" autocomplete="new-password" minlength="8" required>
+                </div>
+
+                <div id="settingsPasswordMessage" class="account-form-message"></div>
+                <button id="settingsPasswordButton" type="submit">Change Password</button>
+            </form>
+        </section>
+
+        <section id="teamManagementCard" class="account-settings-card team-management-card" style="display:none;">
+            <div class="team-management-header">
+                <div>
+                    <span class="account-settings-kicker">TEAM MANAGEMENT</span>
+                    <h3>Company Team</h3>
+                    <p>Invite staff into your organisation and view existing GeoTrack team members.</p>
+                </div>
+                <button class="secondary-button" type="button" onclick="loadTeamManagement()">Refresh Team</button>
+            </div>
+
+            <form id="teamInviteForm" class="team-invite-form" onsubmit="createTeamInvitation(event)">
+                <div class="account-form-group">
+                    <label for="teamInviteName">STAFF MEMBER NAME</label>
+                    <input id="teamInviteName" type="text" autocomplete="name" placeholder="e.g. Alex Smith" required>
+                </div>
+
+                <div class="account-form-group">
+                    <label for="teamInviteEmail">EMAIL ADDRESS</label>
+                    <input id="teamInviteEmail" type="email" autocomplete="email" placeholder="alex@company.co.uk" required>
+                </div>
+
+                <button id="teamInviteButton" type="submit">Create Invitation</button>
+            </form>
+
+            <div id="teamInviteMessage" class="account-form-message"></div>
+
+            <div id="invitationLinkBox" class="invitation-link-box">
+                <strong>LOCAL TEST INVITATION LINK</strong>
+                <div class="invitation-link-line">
+                    <input id="invitationLinkValue" type="text" readonly>
+                    <button class="secondary-button" type="button" onclick="copyInvitationLink()">Copy Link</button>
+                    <button type="button" onclick="openInvitationLink()">Open Link</button>
+                </div>
+            </div>
+
+            <div class="team-section-title">Team Members</div>
+            <div id="teamMembersList" class="team-list">
+                <div class="team-empty">Loading team members...</div>
+            </div>
+
+            <div class="team-section-title">Pending Invitations</div>
+            <div id="teamInvitationsList" class="team-list">
+                <div class="team-empty">Loading invitations...</div>
+            </div>
+        </section>
+
+        <section class="account-settings-card account-session-card">
+            <span class="account-settings-kicker">SESSION</span>
+            <h3>Secure Session</h3>
+            <p class="account-settings-description">
+                Your authenticated GeoTrack session protects projects, investigations and account settings.
+            </p>
+            <button class="secondary-button" type="button" onclick="logout()">Log Out of GeoTrack</button>
+        </section>
+    </div>
+</div>
+
+<div id="dashboard">
 
         <div class="dashboard-header">
 
@@ -712,21 +2792,35 @@
                 <p class="welcome-text">
                     Manage GeoTrack projects and site investigations
                 </p>
+                <div class="welcome-accent">Welcome back, Jessica</div>
 
                 <span id="roleBadge" class="role-badge">
                     LOGGED IN
                 </span>
             </div>
 
-            <div>
+            <div class="dashboard-actions">
+                <div class="dashboard-date">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+                        <path d="M7 3v4M17 3v4M3 10h18"></path>
+                    </svg>
+                    <span id="dashboardDate">Today</span>
+                </div>
+
+                <button class="refresh-button" onclick="loadProjects()">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M20 6v5h-5"></path><path d="M4 18v-5h5"></path>
+                        <path d="M6.1 9a7 7 0 0 1 11.6-2.6L20 11M4 13l2.3 4.6A7 7 0 0 0 17.9 15"></path>
+                    </svg>
+                    Refresh
+                </button>
 
                 <button onclick="showCreateForm()">
                     + Add Project
                 </button>
 
-                <button onclick="loadProjects()">
-                    Refresh
-                </button>
+
 
             </div>
 
@@ -841,21 +2935,7 @@
                     0
                 </div>
 
-            </div>
-
-            <div class="stat-card">
-
-                <h3>
-                    Completed Investigations
-                </h3>
-
-                <div
-                    id="completedInvestigations"
-                    class="stat-number">
-                    0
-                </div>
-
-            </div>
+                       </div>
 
         </div>
 
@@ -909,6 +2989,16 @@
                 </p>
             </div>
 
+        </div>
+
+
+        <div class="section-heading-row">
+            <div class="section-title">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 6h7l2 2h9v11H3z"></path>
+                </svg>
+                <h3>All Projects</h3>
+            </div>
         </div>
 
         <div class="search-area">
@@ -1089,7 +3179,41 @@
 
     </div>
 
-    <div id="projectDetails">
+    
+<section id="projectsWorkspace" class="workspace-view">
+  <div class="workspace-header">
+    <div><h2>Projects</h2><p>Manage every GeoTrack project from one place.</p></div>
+    <div class="workspace-actions">
+      <button class="secondary-button" onclick="loadProjects()">Refresh</button>
+      <button onclick="showCreateFormFromWorkspace()">+ Add Project</button>
+    </div>
+  </div>
+  <div class="workspace-search">
+    <input id="workspaceProjectSearch" placeholder="Search project name, reference, location or client..." oninput="renderProjectsWorkspace()">
+    <select id="workspaceProjectStatus" onchange="renderProjectsWorkspace()">
+      <option value="">All Statuses</option><option value="PLANNED">Planned</option>
+      <option value="IN_PROGRESS">In Progress</option><option value="COMPLETED">Completed</option>
+    </select>
+  </div>
+  <div id="projectsWorkspaceGrid" class="workspace-grid"></div>
+</section>
+
+<section id="investigationsWorkspace" class="workspace-view">
+  <div class="workspace-header">
+    <div><h2>Investigations</h2><p>View site investigations across all GeoTrack projects.</p></div>
+    <button class="secondary-button" onclick="renderInvestigationsWorkspace()">Refresh</button>
+  </div>
+  <div class="workspace-search">
+    <input id="workspaceInvestigationSearch" placeholder="Search reference, type, location or project..." oninput="renderInvestigationsWorkspace()">
+    <select id="workspaceInvestigationStatus" onchange="renderInvestigationsWorkspace()">
+      <option value="">All Statuses</option><option value="PLANNED">Planned</option>
+      <option value="IN_PROGRESS">In Progress</option><option value="COMPLETED">Completed</option>
+    </select>
+  </div>
+  <div id="investigationsWorkspaceGrid" class="workspace-grid"></div>
+</section>
+
+<div id="projectDetails">
 
         <button
             class="back-button"
@@ -1364,6 +3488,114 @@
 
 <script>
 
+/* =========================================================
+   GEOTRACK TOAST NOTIFICATIONS
+   Shared success/error/warning notification helper.
+   ========================================================= */
+
+function showToast(title, message, type = "success") {
+    let container = document.querySelector(".toast-container");
+
+    if (!container) {
+        container = document.createElement("div");
+        container.className = "toast-container";
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement("div");
+    toast.className = "toast";
+
+    if (type === "success") {
+        toast.classList.add("toast-success");
+    } else if (type === "error") {
+        toast.classList.add("toast-error");
+    } else if (type === "warning") {
+        toast.classList.add("toast-warning");
+    }
+
+    const toastTitle = document.createElement("div");
+    toastTitle.className = "toast-title";
+    toastTitle.textContent = title || "GeoTrack";
+
+    const toastMessage = document.createElement("div");
+    toastMessage.className = "toast-message";
+    toastMessage.textContent = message || "";
+
+    toast.appendChild(toastTitle);
+    toast.appendChild(toastMessage);
+    container.appendChild(toast);
+
+    window.setTimeout(() => {
+        toast.style.animation = "toastOut 0.25s ease forwards";
+
+        window.setTimeout(() => {
+            toast.remove();
+        }, 250);
+    }, 3200);
+}
+
+
+/* =========================================================
+   GEOTRACK CSRF PROTECTION
+   Before every same-origin state-changing request, GeoTrack
+   asks Spring Security for the current CSRF token and sends
+   that exact returned token in Spring's expected header.
+   ========================================================= */
+
+const geoTrackOriginalFetch = window.fetch.bind(window);
+
+async function getGeoTrackCsrfToken() {
+    const response = await geoTrackOriginalFetch("/api/csrf", {
+        method: "GET",
+        credentials: "same-origin",
+        cache: "no-store",
+        headers: {
+            "Accept": "application/json"
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error("Unable to initialise GeoTrack security token.");
+    }
+
+    const payload = await response.json();
+
+    if (!payload.token || !payload.headerName) {
+        throw new Error("GeoTrack security token was not returned.");
+    }
+
+    return payload;
+}
+
+window.fetch = async function(resource, options = {}) {
+    const requestOptions = {...options};
+    const method = String(requestOptions.method || "GET").toUpperCase();
+
+    const targetUrl =
+        typeof resource === "string"
+            ? new URL(resource, window.location.href)
+            : new URL(resource.url, window.location.href);
+
+    const isSameOrigin =
+        targetUrl.origin === window.location.origin;
+
+    const needsCsrf =
+        !["GET", "HEAD", "OPTIONS", "TRACE"].includes(method);
+
+    if (isSameOrigin && needsCsrf) {
+        const csrf = await getGeoTrackCsrfToken();
+        const headers = new Headers(requestOptions.headers || {});
+
+        headers.set(csrf.headerName, csrf.token);
+
+        requestOptions.headers = headers;
+        requestOptions.credentials = requestOptions.credentials || "same-origin";
+    }
+
+    return geoTrackOriginalFetch(resource, requestOptions);
+};
+
+
 const API_URL =
     "/api/projects";
 
@@ -1415,6 +3647,64 @@ async function loadUserRole() {
 }
 
 
+/* PROFILE ACCOUNT MENU */
+
+function toggleProfileMenu(event) {
+    if (event) {
+        event.stopPropagation();
+    }
+
+    const menu = document.getElementById("profileDropdown");
+    const button = document.getElementById("profileMenuButton");
+
+    if (!menu || !button) {
+        return;
+    }
+
+    const opening = !menu.classList.contains("open");
+
+    menu.classList.toggle("open", opening);
+    button.classList.toggle("menu-open", opening);
+    button.setAttribute("aria-expanded", opening ? "true" : "false");
+}
+
+function closeProfileMenu() {
+    const menu = document.getElementById("profileDropdown");
+    const button = document.getElementById("profileMenuButton");
+
+    if (menu) {
+        menu.classList.remove("open");
+    }
+
+    if (button) {
+        button.classList.remove("menu-open");
+        button.setAttribute("aria-expanded", "false");
+    }
+}
+
+function openSettingsFromProfile() {
+    closeProfileMenu();
+
+    const settingsButton = Array
+        .from(document.querySelectorAll(".nav-item"))
+        .find(button => button.textContent.trim() === "Settings");
+
+    openWorkspace("settings", settingsButton || null);
+}
+
+document.addEventListener("click", function (event) {
+    const menu = document.getElementById("profileDropdown");
+    const button = document.getElementById("profileMenuButton");
+
+    if (!menu || !button) {
+        return;
+    }
+
+    if (!menu.contains(event.target) && !button.contains(event.target)) {
+        closeProfileMenu();
+    }
+});
+
 /* LOGOUT */
 
 async function logout() {
@@ -1446,41 +3736,96 @@ async function loadProjects() {
     try {
 
         const response =
-            await fetch(API_URL);
+            await fetch(API_URL, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                },
+                cache: "no-store"
+            });
 
         if (!response.ok) {
-
             throw new Error(
                 "Failed to load projects"
             );
-
         }
 
-        allProjects =
+        const projects =
             await response.json();
 
-        updateStatistics();
+        allProjects =
+            Array.isArray(projects)
+                ? projects
+                : [];
 
-        await loadInvestigationStatistics();
+        /*
+         * Each screen is refreshed independently.
+         * A problem in one dashboard widget must never stop the
+         * Projects workspace from showing freshly saved projects.
+         */
 
-        displayProjects(allProjects);
+        try {
+            updateStatistics();
+        }
+        catch (error) {
+            console.error(
+                "Unable to update project statistics:",
+                error
+            );
+        }
+
+        try {
+            await loadInvestigationStatistics();
+        }
+        catch (error) {
+            console.error(
+                "Unable to update investigation statistics:",
+                error
+            );
+        }
+
+        try {
+            displayProjects(allProjects);
+        }
+        catch (error) {
+            console.error(
+                "Unable to update dashboard project cards:",
+                error
+            );
+        }
+
+        try {
+            renderProjectsWorkspace();
+        }
+        catch (error) {
+            console.error(
+                "Unable to update Projects workspace:",
+                error
+            );
+        }
+
+        return allProjects;
 
     }
 
     catch (error) {
 
-        projectsContainer.innerHTML =
-            `<div class="no-results">
-                Unable to load projects. Please try again.
-            </div>`;
+        if (projectsContainer) {
+            projectsContainer.innerHTML =
+                `<div class="no-results">
+                    Unable to load projects. Please try again.
+                </div>`;
+        }
 
         showToast(
             "Unable to load projects",
-            "Please try refreshing the dashboard.",
+            "Please try refreshing the projects.",
             "error"
         );
 
         console.error(error);
+
+        return [];
 
     }
 
@@ -1612,58 +3957,42 @@ async function loadInvestigationStatistics() {
 
     try {
 
-        const response =
-            await fetch(
-                INVESTIGATION_API_URL
-            );
+        const response = await fetch(INVESTIGATION_API_URL);
 
         if (!response.ok) {
-
-            throw new Error(
-                "Failed to load investigations"
-            );
-
+            throw new Error("Failed to load investigations");
         }
 
-        const investigations =
-            await response.json();
+        const investigations = await response.json();
 
+        const totalElement = document.getElementById("totalInvestigations");
+        const plannedElement = document.getElementById("plannedInvestigations");
+        const inProgressElement = document.getElementById("investigationsInProgress");
+        const completedElement = document.getElementById("completedInvestigations");
 
-        document.getElementById(
-            "totalInvestigations"
-        ).textContent =
-            investigations.length;
+        if (totalElement) {
+            totalElement.textContent = investigations.length;
+        }
 
-
-        document.getElementById(
-            "plannedInvestigations"
-        ).textContent =
-            investigations.filter(
-                investigation =>
-                    investigation.status === "PLANNED"
+        if (plannedElement) {
+            plannedElement.textContent = investigations.filter(
+                investigation => investigation.status === "PLANNED"
             ).length;
+        }
 
-
-        document.getElementById(
-            "investigationsInProgress"
-        ).textContent =
-            investigations.filter(
-                investigation =>
-                    investigation.status === "IN_PROGRESS"
+        if (inProgressElement) {
+            inProgressElement.textContent = investigations.filter(
+                investigation => investigation.status === "IN_PROGRESS"
             ).length;
+        }
 
-
-        document.getElementById(
-            "completedInvestigations"
-        ).textContent =
-            investigations.filter(
-                investigation =>
-                    investigation.status === "COMPLETED"
+        if (completedElement) {
+            completedElement.textContent = investigations.filter(
+                investigation => investigation.status === "COMPLETED"
             ).length;
+        }
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Unable to load investigation statistics:",
@@ -2906,7 +5235,15 @@ async function saveProject() {
         hideProjectForm();
 
 
-        loadProjects();
+        await loadProjects();
+
+        const projectsWorkspace =
+            document.getElementById("projectsWorkspace");
+
+        if (projectsWorkspace &&
+                projectsWorkspace.classList.contains("active")) {
+            renderProjectsWorkspace();
+        }
 
     }
 
@@ -3469,16 +5806,1265 @@ async function deleteInvestigation(id) {
 }
 
 
+// =========================
+// GEOTRACK FUNCTIONAL CALENDAR
+// =========================
+let calendarDate = new Date();
+
+function calendarDateKey(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+}
+
+function renderCalendar() {
+    const title = document.getElementById("calendarMonthTitle");
+    const grid = document.getElementById("calendarGrid");
+    if (!title || !grid) return;
+
+    const year = calendarDate.getFullYear();
+    const month = calendarDate.getMonth();
+
+    title.textContent = new Intl.DateTimeFormat("en-GB", {
+        month: "long",
+        year: "numeric"
+    }).format(new Date(year, month, 1));
+
+    const firstDay = new Date(year, month, 1);
+    const leadingDays = (firstDay.getDay() + 6) % 7;
+    const firstCell = new Date(year, month, 1 - leadingDays);
+    const todayKey = calendarDateKey(new Date());
+
+    let output = "";
+
+    for (let index = 0; index < 42; index++) {
+        const cellDate = new Date(
+            firstCell.getFullYear(),
+            firstCell.getMonth(),
+            firstCell.getDate() + index
+        );
+
+        const dateKey = calendarDateKey(cellDate);
+        const currentMonth = cellDate.getMonth() === month;
+        const today = dateKey === todayKey;
+
+        const dayProjects = (Array.isArray(allProjects) ? allProjects : [])
+            .filter(project => project.targetCompletionDate === dateKey);
+
+        const classes = [
+            "calendar-day",
+            currentMonth ? "" : "other-month",
+            today ? "today" : "",
+            dayProjects.length ? "has-events" : ""
+        ].filter(Boolean).join(" ");
+
+        const events = dayProjects.map(project => {
+            const reference = escapeHtml(project.projectReference || "PROJECT");
+            const name = escapeHtml(project.projectName || "Untitled Project");
+            return `
+                <button type="button"
+                        class="calendar-event"
+                        onclick="openCalendarProject(${project.id})"
+                        title="${reference} - ${name}">
+                    <span class="calendar-event-reference">${reference}</span>
+                    ${name}
+                </button>`;
+        }).join("");
+
+        output += `
+            <div class="${classes}">
+                <div class="calendar-day-number">${cellDate.getDate()}</div>
+                ${events}
+            </div>`;
+    }
+
+    grid.innerHTML = output;
+}
+
+function changeCalendarMonth(amount) {
+    calendarDate = new Date(
+        calendarDate.getFullYear(),
+        calendarDate.getMonth() + amount,
+        1
+    );
+    renderCalendar();
+}
+
+function calendarToday() {
+    calendarDate = new Date();
+    renderCalendar();
+}
+
+function openCalendarProject(projectId) {
+    viewProject(projectId);
+}
+
+
+
+// =========================
+// GEOTRACK FUNCTIONAL REPORTS
+// =========================
+
+function reportCountByStatus(items, status) {
+    return items.filter(item => item.status === status).length;
+}
+
+function reportBreakdownHtml(rows, total) {
+    if (!rows.length) {
+        return '<div class="workspace-empty">No report data available.</div>';
+    }
+
+    return rows.map(row => {
+        const percent = total > 0 ? Math.round((row.count / total) * 100) : 0;
+        return `
+            <div class="report-breakdown-row">
+                <span>${escapeHtml(row.label)}</span>
+                <div class="report-breakdown-track">
+                    <div class="report-breakdown-fill" style="width:${percent}%"></div>
+                </div>
+                <strong>${row.count}</strong>
+            </div>
+        `;
+    }).join("");
+}
+
+function reportDeadlineLabel(project) {
+    const status = getDeadlineStatus(project);
+
+    if (status === "OVERDUE") return "Overdue";
+    if (status === "DUE_SOON") return "Due Soon";
+    if (status === "ON_TRACK") return "On Track";
+    return "No Date";
+}
+
+function reportDeadlineClass(project) {
+    const status = getDeadlineStatus(project);
+
+    if (status === "OVERDUE") return "report-deadline-overdue";
+    if (status === "DUE_SOON") return "report-deadline-due-soon";
+    if (status === "ON_TRACK") return "report-deadline-on-track";
+    return "report-muted";
+}
+
+async function loadReportInvestigations() {
+    try {
+        const response = await fetch(INVESTIGATION_API_URL);
+
+        if (!response.ok) {
+            throw new Error("Failed to load investigations for reports");
+        }
+
+        allInvestigations = await response.json();
+    }
+    catch (error) {
+        console.error(error);
+        allInvestigations = Array.isArray(allInvestigations) ? allInvestigations : [];
+        showToast(
+            "Investigation report unavailable",
+            "Project reporting is still available.",
+            "warning"
+        );
+    }
+}
+
+async function renderReports() {
+    const workspace = document.getElementById("reportsWorkspace");
+    if (!workspace) return;
+
+    try {
+        const projectResponse = await fetch(API_URL);
+
+        if (projectResponse.ok) {
+            allProjects = await projectResponse.json();
+        }
+    }
+    catch (error) {
+        console.error(error);
+    }
+
+    await loadReportInvestigations();
+
+    const projects = Array.isArray(allProjects) ? allProjects : [];
+    const investigations = Array.isArray(allInvestigations) ? allInvestigations : [];
+
+    const totalProjects = projects.length;
+    const inProgress = reportCountByStatus(projects, "IN_PROGRESS");
+    const overdue = projects.filter(project =>
+        project.status !== "COMPLETED" &&
+        getDeadlineStatus(project) === "OVERDUE"
+    ).length;
+
+    document.getElementById("reportTotalProjects").textContent = totalProjects;
+    document.getElementById("reportInProgressProjects").textContent = inProgress;
+    document.getElementById("reportOverdueProjects").textContent = overdue;
+    document.getElementById("reportTotalInvestigations").textContent = investigations.length;
+
+    const generated = document.getElementById("reportGeneratedAt");
+    if (generated) {
+        generated.textContent = "Generated " + new Intl.DateTimeFormat("en-GB", {
+            dateStyle: "medium",
+            timeStyle: "short"
+        }).format(new Date());
+    }
+
+    const projectStatusRows = [
+        { label: "Planned", count: reportCountByStatus(projects, "PLANNED") },
+        { label: "In Progress", count: reportCountByStatus(projects, "IN_PROGRESS") },
+        { label: "Completed", count: reportCountByStatus(projects, "COMPLETED") }
+    ];
+
+    document.getElementById("reportProjectStatusBreakdown").innerHTML =
+        reportBreakdownHtml(projectStatusRows, totalProjects);
+
+    const deadlineRows = [
+        {
+            label: "On Track",
+            count: projects.filter(project =>
+                project.status !== "COMPLETED" &&
+                getDeadlineStatus(project) === "ON_TRACK"
+            ).length
+        },
+        {
+            label: "Due Soon",
+            count: projects.filter(project =>
+                project.status !== "COMPLETED" &&
+                getDeadlineStatus(project) === "DUE_SOON"
+            ).length
+        },
+        {
+            label: "Overdue",
+            count: projects.filter(project =>
+                project.status !== "COMPLETED" &&
+                getDeadlineStatus(project) === "OVERDUE"
+            ).length
+        },
+        {
+            label: "No Date",
+            count: projects.filter(project => !project.targetCompletionDate).length
+        }
+    ];
+
+    document.getElementById("reportDeadlineBreakdown").innerHTML =
+        reportBreakdownHtml(deadlineRows, totalProjects);
+
+    const investigationStatuses = ["PLANNED", "IN_PROGRESS", "COMPLETED"];
+    const investigationRows = investigationStatuses.map(status => ({
+        label: formatStatus(status),
+        count: reportCountByStatus(investigations, status)
+    }));
+
+    document.getElementById("reportInvestigationBreakdown").innerHTML =
+        reportBreakdownHtml(investigationRows, investigations.length);
+
+    const clientCounts = {};
+    projects.forEach(project => {
+        const client = (project.clientName || "Not set").trim() || "Not set";
+        clientCounts[client] = (clientCounts[client] || 0) + 1;
+    });
+
+    const clientRows = Object.entries(clientCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 6)
+        .map(([label, count]) => ({ label, count }));
+
+    document.getElementById("reportClientBreakdown").innerHTML =
+        reportBreakdownHtml(clientRows, totalProjects);
+
+    const sortedProjects = [...projects].sort((a, b) => {
+        const aDate = a.targetCompletionDate || "9999-12-31";
+        const bDate = b.targetCompletionDate || "9999-12-31";
+        return aDate.localeCompare(bDate);
+    });
+
+    const projectTable = document.getElementById("reportProjectsTable");
+
+    if (!sortedProjects.length) {
+        projectTable.innerHTML =
+            '<tr><td colspan="7" class="report-muted">No projects available.</td></tr>';
+    }
+    else {
+        projectTable.innerHTML = sortedProjects.map(project => `
+            <tr>
+                <td class="report-reference">${escapeHtml(project.projectReference || "—")}</td>
+                <td>${escapeHtml(project.projectName || "Untitled Project")}</td>
+                <td>${escapeHtml(project.clientName || "Not set")}</td>
+                <td>${escapeHtml(project.location || "Not set")}</td>
+                <td><span class="report-status-pill">${escapeHtml(formatStatus(project.status))}</span></td>
+                <td>${escapeHtml(formatDate(project.targetCompletionDate) || "No target date")}</td>
+                <td class="${reportDeadlineClass(project)}">${reportDeadlineLabel(project)}</td>
+            </tr>
+        `).join("");
+    }
+
+    const investigationTable = document.getElementById("reportInvestigationsTable");
+
+    if (!investigations.length) {
+        investigationTable.innerHTML =
+            '<tr><td colspan="6" class="report-muted">No site investigations available.</td></tr>';
+    }
+    else {
+        investigationTable.innerHTML = investigations.map(investigation => {
+            const projectId = getInvestigationProjectId(investigation);
+            const project = projectForId(projectId);
+
+            return `
+                <tr>
+                    <td class="report-reference">${escapeHtml(investigation.investigationReference || "—")}</td>
+                    <td>${escapeHtml(investigation.investigationType || "Not set")}</td>
+                    <td>${escapeHtml(investigation.location || "Not set")}</td>
+                    <td><span class="report-status-pill">${escapeHtml(formatStatus(investigation.status))}</span></td>
+                    <td>${escapeHtml(formatDate(investigation.investigationDate) || "No date")}</td>
+                    <td>${escapeHtml(project ? project.projectName : "Unassigned")}</td>
+                </tr>
+            `;
+        }).join("");
+    }
+}
+
+function reportsCsvEscape(value) {
+    const textValue = String(value ?? "");
+    return '"' + textValue.replace(/"/g, '""') + '"';
+}
+
+function reportsFormatStatus(value) {
+    if (!value) return "";
+    return String(value)
+        .replace(/_/g, " ")
+        .toLowerCase()
+        .replace(/\b\w/g, letter => letter.toUpperCase());
+}
+
+function downloadReportsCsv() {
+    try {
+        const projects = Array.isArray(allProjects) ? allProjects : [];
+        const investigations = Array.isArray(allInvestigations) ? allInvestigations : [];
+
+        const rows = [
+            ["GEOTRACK PROJECT REPORT"],
+            ["Reference", "Project", "Client", "Location", "Status", "Target Date", "Deadline Health"],
+
+            ...projects.map(project => [
+                project.projectReference || "",
+                project.projectName || "",
+                project.clientName || "",
+                project.location || "",
+                reportsFormatStatus(project.status),
+                project.targetCompletionDate || "",
+                typeof reportDeadlineLabel === "function"
+                    ? reportDeadlineLabel(project)
+                    : (project.targetCompletionDate || "")
+            ]),
+
+            [],
+
+            ["GEOTRACK SITE INVESTIGATION REPORT"],
+            ["Reference", "Type", "Location", "Status", "Date", "Linked Project"],
+
+            ...investigations.map(investigation => {
+                let linkedProjectName = "Unassigned";
+
+                if (typeof getInvestigationProjectId === "function" &&
+                    typeof projectForId === "function") {
+
+                    const projectId = getInvestigationProjectId(investigation);
+                    const linkedProject = projectForId(projectId);
+
+                    if (linkedProject) {
+                        linkedProjectName =
+                            linkedProject.projectName ||
+                            linkedProject.projectReference ||
+                            "Linked Project";
+                    }
+                }
+
+                return [
+                    investigation.investigationReference || "",
+                    investigation.investigationType || "",
+                    investigation.location || "",
+                    reportsFormatStatus(investigation.status),
+                    investigation.investigationDate || "",
+                    linkedProjectName
+                ];
+            })
+        ];
+
+        const csvContent = rows
+            .map(row => row.map(reportsCsvEscape).join(","))
+            .join("\r\n");
+
+        const blob = new Blob(
+            ["\uFEFF" + csvContent],
+            { type: "text/csv;charset=utf-8;" }
+        );
+
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const downloadLink = document.createElement("a");
+
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const day = String(today.getDate()).padStart(2, "0");
+        const fileDate = `${year}-${month}-${day}`;
+
+        downloadLink.href = downloadUrl;
+        downloadLink.download = `GeoTrack_Report_${fileDate}.csv`;
+        downloadLink.style.display = "none";
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+
+        setTimeout(() => {
+            if (downloadLink.parentNode) {
+                downloadLink.parentNode.removeChild(downloadLink);
+            }
+            window.URL.revokeObjectURL(downloadUrl);
+        }, 1000);
+
+        console.log(`GeoTrack CSV exported: GeoTrack_Report_${fileDate}.csv`);
+    } catch (error) {
+        console.error("GeoTrack CSV export failed:", error);
+        alert("GeoTrack could not export the CSV. Check the browser console for details.");
+    }
+}
+
+function printReports() {
+    window.print();
+}
+
+
+// =========================
+// GEOTRACK CLIENTS DIRECTORY
+
+// =========================
+function renderClientsWorkspace() {
+    const grid = document.getElementById("clientsDirectoryGrid");
+    if (!grid) return;
+
+    const projects = Array.isArray(allProjects) ? allProjects : [];
+    const query = (document.getElementById("clientDirectorySearch")?.value || "")
+        .trim().toLowerCase();
+
+    const grouped = {};
+
+    projects.forEach(project => {
+        const clientName = (project.clientName || "Client not set").trim() || "Client not set";
+
+        if (!grouped[clientName]) {
+            grouped[clientName] = [];
+        }
+
+        grouped[clientName].push(project);
+    });
+
+    const clients = Object.entries(grouped)
+        .map(([name, clientProjects]) => ({ name, projects: clientProjects }))
+        .filter(client => {
+            if (!query) return true;
+
+            const searchable = [
+                client.name,
+                ...client.projects.flatMap(project => [
+                    project.projectReference,
+                    project.projectName,
+                    project.location
+                ])
+            ].filter(Boolean).join(" ").toLowerCase();
+
+            return searchable.includes(query);
+        })
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+    const allClientNames = Object.keys(grouped);
+    const activeProjects = projects.filter(project => project.status !== "COMPLETED").length;
+    const completedProjects = projects.filter(project => project.status === "COMPLETED").length;
+
+    document.getElementById("clientsTotalCount").textContent = allClientNames.length;
+    document.getElementById("clientsActiveProjects").textContent = activeProjects;
+    document.getElementById("clientsCompletedProjects").textContent = completedProjects;
+
+    if (!clients.length) {
+        grid.innerHTML = '<div class="workspace-empty">No clients match your search.</div>';
+        return;
+    }
+
+    grid.innerHTML = clients.map(client => {
+        const active = client.projects.filter(project => project.status !== "COMPLETED").length;
+        const completed = client.projects.filter(project => project.status === "COMPLETED").length;
+
+        const projectRows = client.projects
+            .slice()
+            .sort((a, b) => (a.projectReference || "").localeCompare(b.projectReference || ""))
+            .map(project => `
+                <div class="directory-project-row">
+                    <span>${escapeHtml(project.projectName || "Untitled Project")}</span>
+                    <strong>${escapeHtml(project.projectReference || "NO REF")}</strong>
+                </div>
+            `).join("");
+
+        return `
+            <article class="directory-card">
+                <h3>${escapeHtml(client.name)}</h3>
+                <div class="directory-card-subtitle">GeoTrack client portfolio</div>
+
+                <div class="directory-card-stats">
+                    <div class="directory-mini-stat">
+                        <strong>${client.projects.length}</strong>
+                        <span>Projects</span>
+                    </div>
+                    <div class="directory-mini-stat">
+                        <strong>${active}</strong>
+                        <span>Active</span>
+                    </div>
+                    <div class="directory-mini-stat">
+                        <strong>${completed}</strong>
+                        <span>Complete</span>
+                    </div>
+                </div>
+
+                <div class="directory-project-list">
+                    ${projectRows || '<div class="report-muted">No projects</div>'}
+                </div>
+            </article>
+        `;
+    }).join("");
+}
+
+
+// =========================
+// GEOTRACK SITES DIRECTORY
+// =========================
+function renderSitesWorkspace() {
+    const grid = document.getElementById("sitesDirectoryGrid");
+    if (!grid) return;
+
+    const projects = Array.isArray(allProjects) ? allProjects : [];
+    const investigations = Array.isArray(allInvestigations) ? allInvestigations : [];
+    const query = (document.getElementById("siteDirectorySearch")?.value || "")
+        .trim().toLowerCase();
+
+    const sites = {};
+
+    function ensureSite(location) {
+        const cleanLocation = (location || "Location not set").trim() || "Location not set";
+
+        if (!sites[cleanLocation]) {
+            sites[cleanLocation] = {
+                location: cleanLocation,
+                projects: [],
+                investigations: []
+            };
+        }
+
+        return sites[cleanLocation];
+    }
+
+    projects.forEach(project => {
+        ensureSite(project.location).projects.push(project);
+    });
+
+    investigations.forEach(investigation => {
+        ensureSite(investigation.location).investigations.push(investigation);
+    });
+
+    const siteList = Object.values(sites)
+        .filter(site => !query || site.location.toLowerCase().includes(query))
+        .sort((a, b) => a.location.localeCompare(b.location));
+
+    const projectLocations = new Set(
+        projects.map(project => (project.location || "").trim()).filter(Boolean)
+    );
+
+    const investigationLocations = new Set(
+        investigations.map(investigation => (investigation.location || "").trim()).filter(Boolean)
+    );
+
+    document.getElementById("sitesTotalCount").textContent = Object.keys(sites).length;
+    document.getElementById("sitesProjectLocations").textContent = projectLocations.size;
+    document.getElementById("sitesInvestigationLocations").textContent = investigationLocations.size;
+
+    if (!siteList.length) {
+        grid.innerHTML = '<div class="workspace-empty">No sites match your search.</div>';
+        return;
+    }
+
+    grid.innerHTML = siteList.map(site => {
+        const activeProjects = site.projects.filter(project => project.status !== "COMPLETED").length;
+
+        const projectRows = site.projects.map(project => `
+            <div class="directory-project-row">
+                <span>${escapeHtml(project.projectName || "Untitled Project")}</span>
+                <strong>${escapeHtml(project.projectReference || "NO REF")}</strong>
+            </div>
+        `).join("");
+
+        const investigationRows = site.investigations.map(investigation => `
+            <div class="directory-project-row">
+                <span>${escapeHtml(investigation.investigationType || "Site Investigation")}</span>
+                <strong>${escapeHtml(investigation.investigationReference || "NO REF")}</strong>
+            </div>
+        `).join("");
+
+        return `
+            <article class="directory-card">
+                <h3>${escapeHtml(site.location)}</h3>
+                <div class="directory-card-subtitle">GeoTrack site record</div>
+
+                <div class="directory-card-stats">
+                    <div class="directory-mini-stat">
+                        <strong>${site.projects.length}</strong>
+                        <span>Projects</span>
+                    </div>
+                    <div class="directory-mini-stat">
+                        <strong>${site.investigations.length}</strong>
+                        <span>Investigations</span>
+                    </div>
+                    <div class="directory-mini-stat">
+                        <strong>${activeProjects}</strong>
+                        <span>Active</span>
+                    </div>
+                </div>
+
+                <div class="directory-project-list">
+                    ${projectRows}
+                    ${investigationRows}
+                    ${(!projectRows && !investigationRows) ? '<div class="report-muted">No linked records</div>' : ''}
+                </div>
+            </article>
+        `;
+    }).join("");
+}
+
+
+// =========================
+// GEOTRACK SETTINGS
+// =========================
+function renderSettingsWorkspace() {
+    loadAccountSettings();
+    const role = currentUserRole || "STAFF";
+
+    const roleText = document.getElementById("settingsRoleText");
+    const roleInput = document.getElementById("settingsRoleInput");
+    const teamCard = document.getElementById("teamManagementCard");
+
+    if (roleText) {
+        roleText.textContent = "Role: " + formatStatus(role);
+    }
+
+    if (roleInput) {
+        roleInput.value = formatStatus(role);
+    }
+
+    if (teamCard) {
+        const isAdmin = role.toUpperCase() === "ADMIN";
+        teamCard.style.display = isAdmin ? "block" : "none";
+
+        if (isAdmin) {
+            loadTeamManagement();
+        }
+    }
+}
+
+
+// =========================
+// GEOTRACK TEAM MANAGEMENT
+// =========================
+
+async function loadTeamManagement() {
+    if ((currentUserRole || "").toUpperCase() !== "ADMIN") {
+        return;
+    }
+
+    const membersList = document.getElementById("teamMembersList");
+    const invitationsList = document.getElementById("teamInvitationsList");
+
+    if (!membersList || !invitationsList) {
+        return;
+    }
+
+    membersList.innerHTML = '<div class="team-empty">Loading team members...</div>';
+    invitationsList.innerHTML = '<div class="team-empty">Loading invitations...</div>';
+
+    try {
+        const [teamResponse, invitationsResponse] = await Promise.all([
+            fetch("/api/team", {headers: {"Accept": "application/json"}}),
+            fetch("/api/team/invitations", {headers: {"Accept": "application/json"}})
+        ]);
+
+        if (teamResponse.status === 401 || invitationsResponse.status === 401) {
+            window.location.href = "/login.html";
+            return;
+        }
+
+        if (teamResponse.status === 403 || invitationsResponse.status === 403) {
+            throw new Error("Only organisation administrators can manage the team.");
+        }
+
+        if (!teamResponse.ok || !invitationsResponse.ok) {
+            throw new Error("GeoTrack could not load Team Management.");
+        }
+
+        const team = await teamResponse.json();
+        const invitations = await invitationsResponse.json();
+
+        renderTeamMembers(team);
+        renderTeamInvitations(invitations);
+
+    } catch (error) {
+        console.error("Unable to load GeoTrack team:", error);
+
+        membersList.innerHTML =
+            '<div class="team-empty">GeoTrack could not load team members.</div>';
+
+        invitationsList.innerHTML =
+            '<div class="team-empty">GeoTrack could not load invitations.</div>';
+
+        showToast(
+            "Team Management",
+            error.message || "GeoTrack could not load the company team.",
+            "error"
+        );
+    }
+}
+
+function renderTeamMembers(team) {
+    const list = document.getElementById("teamMembersList");
+
+    if (!list) {
+        return;
+    }
+
+    if (!Array.isArray(team) || team.length === 0) {
+        list.innerHTML =
+            '<div class="team-empty">No team members found.</div>';
+        return;
+    }
+
+    list.innerHTML = team.map(member => `
+        <div class="team-row">
+            <strong>${escapeHtml(member.fullName || "GeoTrack User")}</strong>
+            <span>${escapeHtml(member.email || "")}</span>
+            <span class="team-role-pill">${escapeHtml(member.role || "STAFF")}</span>
+            <span class="team-status-pill ${member.enabled === false ? "pending" : "active"}">
+                ${member.enabled === false ? "DISABLED" : "ACTIVE"}
+            </span>
+        </div>
+    `).join("");
+}
+
+function renderTeamInvitations(invitations) {
+    const list = document.getElementById("teamInvitationsList");
+
+    if (!list) {
+        return;
+    }
+
+    const pending = Array.isArray(invitations)
+        ? invitations.filter(invitation => invitation.accepted !== true)
+        : [];
+
+    if (pending.length === 0) {
+        list.innerHTML =
+            '<div class="team-empty">No pending invitations.</div>';
+        return;
+    }
+
+    list.innerHTML = pending.map(invitation => `
+        <div class="team-row">
+            <strong>${escapeHtml(invitation.fullName || "Invited Staff")}</strong>
+            <span>${escapeHtml(invitation.email || "")}</span>
+            <span class="team-role-pill">${escapeHtml(invitation.role || "STAFF")}</span>
+            <span class="team-status-pill pending">PENDING</span>
+        </div>
+    `).join("");
+}
+
+async function createTeamInvitation(event) {
+    event.preventDefault();
+
+    const nameInput = document.getElementById("teamInviteName");
+    const emailInput = document.getElementById("teamInviteEmail");
+    const button = document.getElementById("teamInviteButton");
+    const message = document.getElementById("teamInviteMessage");
+    const linkBox = document.getElementById("invitationLinkBox");
+
+    if (!nameInput || !emailInput || !button || !message || !linkBox) {
+        return;
+    }
+
+    const fullName = nameInput.value.trim();
+    const email = emailInput.value.trim();
+
+    message.className = "account-form-message";
+    message.textContent = "";
+    linkBox.classList.remove("show");
+
+    button.disabled = true;
+    button.textContent = "Creating Invitation...";
+
+    try {
+        const response = await fetch("/api/team/invitations", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                fullName: fullName,
+                email: email
+            })
+        });
+
+        let data = {};
+
+        try {
+            data = await response.json();
+        } catch (_) {
+        }
+
+        if (response.status === 401) {
+            window.location.href = "/login.html";
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                data.message || "GeoTrack could not create this invitation."
+            );
+        }
+
+        message.textContent =
+            data.message || "Invitation created successfully.";
+        message.className = "account-form-message success";
+
+        document.getElementById("teamInviteForm").reset();
+
+        if (data.invitationUrl) {
+            const fullInvitationUrl =
+                new URL(data.invitationUrl, window.location.origin).href;
+
+            document.getElementById("invitationLinkValue").value =
+                fullInvitationUrl;
+
+            linkBox.classList.add("show");
+        }
+
+        await loadTeamManagement();
+
+    } catch (error) {
+        console.error("Unable to create GeoTrack invitation:", error);
+
+        message.textContent =
+            error.message || "GeoTrack could not create this invitation.";
+        message.className = "account-form-message error";
+
+    } finally {
+        button.disabled = false;
+        button.textContent = "Create Invitation";
+    }
+}
+
+async function copyInvitationLink() {
+    const input = document.getElementById("invitationLinkValue");
+
+    if (!input || !input.value) {
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(input.value);
+        showToast(
+            "Invitation Link",
+            "Invitation link copied.",
+            "success"
+        );
+    } catch (_) {
+        input.select();
+        document.execCommand("copy");
+        showToast(
+            "Invitation Link",
+            "Invitation link copied.",
+            "success"
+        );
+    }
+}
+
+function openInvitationLink() {
+    const input = document.getElementById("invitationLinkValue");
+
+    if (!input || !input.value) {
+        return;
+    }
+
+    window.open(
+        input.value,
+        "_blank",
+        "noopener,noreferrer"
+    );
+}
+
+
+function openWorkspace(name, button = null) {
+
+    const d = document.getElementById("dashboard");
+    const p = document.getElementById("projectsWorkspace");
+    const i = document.getElementById("investigationsWorkspace");
+    const c = document.getElementById("calendarWorkspace");
+    const r = document.getElementById("reportsWorkspace");
+    const cl = document.getElementById("clientsWorkspace");
+    const s = document.getElementById("sitesWorkspace");
+    const st = document.getElementById("settingsWorkspace");
+    const details = document.getElementById("projectDetails");
+    const form = document.getElementById("projectForm");
+
+    if (d) {
+        d.style.display = "none";
+    }
+
+    [p, i, c, r, cl, s, st].forEach(x => {
+        if (x) {
+            x.classList.remove("active");
+            x.style.display = "none";
+        }
+    });
+
+    if (details) {
+        details.style.display = "none";
+    }
+
+    if (form) {
+        form.style.display = "none";
+    }
+
+    if (name === "dashboard" && d) {
+        d.style.display = "block";
+    }
+
+    if (name === "projects" && p) {
+        p.classList.add("active");
+        p.style.display = "block";
+        renderProjectsWorkspace();
+    }
+
+    if (name === "investigations" && i) {
+        i.classList.add("active");
+        i.style.display = "block";
+        renderInvestigationsWorkspace();
+    }
+
+    if (name === "calendar" && c) {
+        c.classList.add("active");
+        c.style.display = "block";
+        renderCalendar();
+    }
+
+    if (name === "reports" && r) {
+        r.classList.add("active");
+        r.style.display = "block";
+        renderReports();
+    }
+
+    if (name === "clients" && cl) {
+        cl.classList.add("active");
+        cl.style.display = "block";
+        renderClientsWorkspace();
+    }
+
+    if (name === "sites" && s) {
+        s.classList.add("active");
+        s.style.display = "block";
+        renderSitesWorkspace();
+    }
+
+    if (name === "settings" && st) {
+        st.classList.add("active");
+        st.style.display = "block";
+        renderSettingsWorkspace();
+    }
+
+    if (button) {
+        setActiveNav(button);
+    }
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+function projectForId(id){return allProjects.find(p=>Number(p.id)===Number(id));}
+function renderProjectsWorkspace(){
+ const grid=document.getElementById("projectsWorkspaceGrid"); if(!grid)return;
+ const q=(document.getElementById("workspaceProjectSearch")?.value||"").toLowerCase();
+ const s=document.getElementById("workspaceProjectStatus")?.value||"";
+ const list=allProjects.filter(p=>(!q||[p.projectReference,p.projectName,p.location,p.clientName].filter(Boolean).join(" ").toLowerCase().includes(q))&&(!s||p.status===s));
+ if(!list.length){grid.innerHTML='<div class="workspace-empty">No projects match your search or filter.</div>';return;}
+ grid.innerHTML=list.map(p=>`<article class="workspace-card">
+ <div class="workspace-card-reference">${escapeHtml(p.projectReference||"NO REFERENCE")}</div>
+ <h3>${escapeHtml(p.projectName||"Untitled Project")}</h3>
+ <p><strong>Location:</strong> ${escapeHtml(p.location||"Not set")}</p>
+ <p><strong>Client:</strong> ${escapeHtml(p.clientName||"Not set")}</p>
+ <p><strong>Status:</strong> ${escapeHtml(formatStatus(p.status))}</p>
+ <p><strong>Target:</strong> ${escapeHtml(formatDate(p.targetCompletionDate)||"No target date")}</p>
+ <div class="workspace-card-actions">
+ <button onclick="viewProject(${p.id})">View Details</button>
+ <button class="secondary-button" onclick="editProject(${p.id})">Edit</button>
+ ${currentUserRole==="ADMIN"?`<button class="delete-button" onclick="deleteProject(${p.id})">Delete</button>`:""}
+ </div></article>`).join("");
+}
+async function renderInvestigationsWorkspace(){
+ const grid=document.getElementById("investigationsWorkspaceGrid"); if(!grid)return;
+ grid.innerHTML='<div class="workspace-empty">Loading investigations...</div>';
+ try{
+  const r=await fetch(INVESTIGATION_API_URL); if(!r.ok)throw new Error();
+  const data=await r.json(),q=(document.getElementById("workspaceInvestigationSearch")?.value||"").toLowerCase(),
+  s=document.getElementById("workspaceInvestigationStatus")?.value||"";
+  const list=data.filter(x=>{
+   const pid=getInvestigationProjectId(x),p=projectForId(pid),pn=p?`${p.projectReference} ${p.projectName}`:"Unassigned";
+   return(!q||[x.investigationReference,x.investigationType,x.location,x.notes,pn].filter(Boolean).join(" ").toLowerCase().includes(q))&&(!s||x.status===s);
+  });
+  if(!list.length){grid.innerHTML='<div class="workspace-empty">No investigations match your search or filter.</div>';return;}
+  grid.innerHTML=list.map(x=>{const pid=getInvestigationProjectId(x),p=projectForId(pid),pn=p?`${p.projectReference} · ${p.projectName}`:"Unassigned";
+   return `<article class="workspace-card"><div class="workspace-card-reference">${escapeHtml(x.investigationReference||"NO REFERENCE")}</div>
+   <h3>${escapeHtml(x.investigationType||"Site Investigation")}</h3>
+   <p><strong>Location:</strong> ${escapeHtml(x.location||"Not set")}</p><p><strong>Status:</strong> ${escapeHtml(formatStatus(x.status))}</p>
+   <p><strong>Date:</strong> ${escapeHtml(formatDate(x.date)||"Not set")}</p><span class="investigation-project-pill">${escapeHtml(pn)}</span>
+   <div class="workspace-card-actions">${pid!==null?`<button onclick="viewProject(${pid})">Open Project</button>`:""}</div></article>`}).join("");
+ }catch(e){grid.innerHTML='<div class="workspace-empty">Investigations could not be loaded.</div>';}
+}
+function showCreateFormFromWorkspace(){openWorkspace("dashboard",document.querySelector(".sidebar-nav .nav-item:first-child"));setTimeout(showCreateForm,50);}
+
+function formatStatus(status) {
+    if (status === null || status === undefined || status === "") {
+        return "Not Set";
+    }
+
+    return String(status)
+        .replace(/[_-]+/g, " ")
+        .toLowerCase()
+        .replace(/\b\w/g, character => character.toUpperCase());
+}
+
+/* DASHBOARD V2 HELPERS */
+
+function updateDashboardIdentity() {
+    const isAdmin = currentUserRole === "ADMIN";
+
+    const profileName = document.getElementById("profileName");
+    const profileRole = document.getElementById("profileRole");
+    const profileAvatar = document.getElementById("profileAvatar");
+
+    if (profileName) {
+        profileName.textContent = isAdmin ? "Jessica Gray" : "Staff User";
+    }
+
+    if (profileRole) {
+        profileRole.textContent = isAdmin ? "Admin" : "Staff";
+    }
+
+    if (profileAvatar) {
+        profileAvatar.textContent = isAdmin ? "JG" : "ST";
+    }
+}
+
+function updateDashboardDate() {
+    const dateElement = document.getElementById("dashboardDate");
+
+    if (!dateElement) {
+        return;
+    }
+
+    dateElement.textContent = new Date().toLocaleDateString(
+        "en-GB",
+        {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        }
+    );
+}
+
+function syncTopSearch() {
+    const topSearch = document.getElementById("topSearchInput");
+    const projectSearch = document.getElementById("searchInput");
+
+    if (!topSearch || !projectSearch) {
+        return;
+    }
+
+    projectSearch.value = topSearch.value;
+    filterProjects();
+}
+
+function setActiveNav(button) {
+    document.querySelectorAll(".nav-item").forEach(item => {
+        item.classList.remove("active");
+    });
+
+    if (button) {
+        button.classList.add("active");
+    }
+}
+
+function focusProjects() {
+    showDashboard();
+
+    window.setTimeout(() => {
+        const projects = document.getElementById("projects");
+
+        if (projects) {
+            projects.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+    }, 100);
+}
+
+function focusInvestigations() {
+    showDashboard();
+
+    showToast(
+        "Investigations",
+        "Open a project to view and manage its linked site investigations.",
+        "warning"
+    );
+}
+
+function futureFeature(featureName) {
+    showToast(
+        featureName,
+        `${featureName} is ready to be built as the next GeoTrack module.`,
+        "warning"
+    );
+}
+
+
 /* INITIAL LOAD */
 
 async function initializeGeoTrack() {
 
     await loadUserRole();
 
+    updateDashboardIdentity();
+    updateDashboardDate();
+
     loadProjects();
 }
 
 initializeGeoTrack();
+
+
+// =========================
+// GEOTRACK WORKING ACCOUNT SETTINGS
+// =========================
+async function loadAccountSettings() {
+    const ids = ["settingsAccountName","settingsAccountEmail","settingsFullName","settingsEmail","settingsRole","settingsStatus"];
+    if (!ids.every(id => document.getElementById(id))) return;
+
+    try {
+        const response = await fetch("/api/account/me", {headers: {"Accept":"application/json"}});
+        if (response.status === 401 || response.status === 403) {
+            window.location.href = "/login.html";
+            return;
+        }
+        if (!response.ok) throw new Error("Unable to load account.");
+
+        const account = await response.json();
+        const displayName = account.fullName || account.email || "GeoTrack User";
+        const displayEmail = account.email || "Not set";
+        const displayRole = account.role || "STAFF";
+        const enabled = account.enabled !== false;
+
+        document.getElementById("settingsAccountName").textContent = displayName;
+        document.getElementById("settingsAccountEmail").textContent = displayEmail;
+        document.getElementById("settingsFullName").textContent = displayName;
+        document.getElementById("settingsEmail").textContent = displayEmail;
+        document.getElementById("settingsRole").textContent = displayRole;
+
+        const status = document.getElementById("settingsStatus");
+        status.textContent = enabled ? "Active" : "Disabled";
+        status.className = enabled ? "account-status-active" : "account-status-disabled";
+
+        const initials = displayName.split(/\s+/).filter(Boolean).slice(0,2)
+            .map(part => part.charAt(0).toUpperCase()).join("") || "GT";
+        document.getElementById("settingsAccountAvatar").textContent = initials;
+
+        const profileName = document.querySelector(".profile-copy strong");
+        const profileRole = document.querySelector(".profile-copy span");
+        const profileAvatar = document.querySelector(".profile-avatar");
+        if (profileName) profileName.textContent = displayName;
+        if (profileRole) profileRole.textContent = displayRole;
+        if (profileAvatar) profileAvatar.textContent = initials;
+    } catch (error) {
+        console.error("Unable to load GeoTrack account settings:", error);
+        document.getElementById("settingsAccountName").textContent = "Account unavailable";
+        document.getElementById("settingsAccountEmail").textContent = "Could not load account details";
+        document.getElementById("settingsFullName").textContent = "—";
+        document.getElementById("settingsEmail").textContent = "—";
+        document.getElementById("settingsRole").textContent = "—";
+        const status = document.getElementById("settingsStatus");
+        status.textContent = "Unavailable";
+        status.className = "account-status-disabled";
+    }
+}
+
+async function changeAccountPassword(event) {
+    event.preventDefault();
+
+    const currentPassword = document.getElementById("settingsCurrentPassword").value;
+    const newPassword = document.getElementById("settingsNewPassword").value;
+    const confirmPassword = document.getElementById("settingsConfirmPassword").value;
+    const button = document.getElementById("settingsPasswordButton");
+
+    if (newPassword.length < 8) {
+        showSettingsPasswordMessage("New password must contain at least 8 characters.", "error");
+        return;
+    }
+    if (newPassword !== confirmPassword) {
+        showSettingsPasswordMessage("Your new passwords do not match.", "error");
+        return;
+    }
+
+    button.disabled = true;
+    button.textContent = "Changing Password...";
+
+    try {
+        const response = await fetch("/api/account/change-password", {
+            method: "POST",
+            headers: {"Content-Type":"application/json","Accept":"application/json"},
+            body: JSON.stringify({currentPassword, newPassword})
+        });
+
+        let data = {};
+        try { data = await response.json(); } catch (_) {}
+
+        if (response.status === 401 || response.status === 403) {
+            window.location.href = "/login.html";
+            return;
+        }
+        if (!response.ok) {
+            showSettingsPasswordMessage(data.message || "GeoTrack could not change your password.", "error");
+            return;
+        }
+
+        document.getElementById("changePasswordForm").reset();
+        showSettingsPasswordMessage(data.message || "Your password has been changed successfully.", "success");
+    } catch (error) {
+        console.error("GeoTrack password change failed:", error);
+        showSettingsPasswordMessage("GeoTrack could not connect to the account service.", "error");
+    } finally {
+        button.disabled = false;
+        button.textContent = "Change Password";
+    }
+}
+
+function showSettingsPasswordMessage(message, type) {
+    const element = document.getElementById("settingsPasswordMessage");
+    if (!element) return;
+    element.textContent = message;
+    element.className = "account-form-message " + type;
+}
 
 </script>
 

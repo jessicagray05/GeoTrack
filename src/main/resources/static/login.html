@@ -5,9 +5,12 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <title>GeoTrack Login</title>
+    <title>GeoTrack | Sign In</title>
 
     <style>
 
@@ -15,108 +18,531 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --background: #0a0d0f;
+            --panel: #121619;
+            --panel-two: #171b1e;
+            --border: #2a3034;
+            --border-light: #343b40;
+            --text: #f5f6f7;
+            --muted: #90989f;
+            --orange: #ff7200;
+            --orange-light: #ff9b4a;
+            --green: #6bc77a;
+            --red: #ff6b62;
+        }
+
+        html,
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            background: #f1f1f1;
-            color: #2b2b2b;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            min-height: 100%;
+        }
+
+        body {
             min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 30px;
+
+            overflow-x: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 70% 20%,
+                    rgba(255, 114, 0, 0.09),
+                    transparent 28%
+                ),
+                linear-gradient(
+                    135deg,
+                    #0c0f11 0%,
+                    #090c0e 55%,
+                    #0e1113 100%
+                );
+
+            color: var(--text);
+
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
         }
 
-        .login-container {
+        body::before {
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            opacity: 0.5;
+
+            background-image:
+                url("data:image/svg+xml,%3Csvg width='1100' height='700' viewBox='0 0 1100 700' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ff7200' stroke-width='1' opacity='.35'%3E%3Cpath d='M80 620C210 530 170 430 310 370s220 20 300-80 50-190 210-240 220 10 310-50'/%3E%3Cpath d='M30 650C180 540 130 400 290 330s250 30 330-80 40-210 220-260 250 30 340-30'/%3E%3Cpath d='M150 680C250 590 230 490 350 430s190 10 270-70 70-150 200-190 190 0 270-40'/%3E%3Cpath d='M260 690C330 620 330 550 420 500s150 0 220-60 70-120 170-150 150-10 220-40'/%3E%3C/g%3E%3C/svg%3E");
+
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+
             width: 100%;
-            max-width: 420px;
-            padding: 20px;
+            max-width: 1050px;
+
+            display: grid;
+            grid-template-columns: 1fr 460px;
+
+            border: 1px solid var(--border);
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            background:
+                rgba(15, 19, 21, 0.96);
+
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.45);
         }
 
-        .login-card {
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            border-top: 5px solid #f28c28;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        .brand-side {
+            position: relative;
+
+            min-height: 650px;
+
+            padding: 58px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(25, 29, 32, 0.97),
+                    rgba(12, 16, 18, 0.98)
+                );
+
+            border-right:
+                1px solid var(--border);
         }
 
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
+        .brand-side::after {
+            content: "";
+
+            position: absolute;
+
+            width: 430px;
+            height: 430px;
+
+            right: -170px;
+            bottom: -170px;
+
+            border:
+                1px solid rgba(255, 114, 0, 0.18);
+
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 0 40px rgba(255, 114, 0, 0.025),
+                0 0 0 80px rgba(255, 114, 0, 0.018),
+                0 0 0 120px rgba(255, 114, 0, 0.012);
         }
 
-        .logo h1 {
+        .brand {
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-name {
             margin: 0;
-            color: #292929;
-            font-size: 32px;
-            letter-spacing: 2px;
+
+            font-size: 34px;
+            font-weight: 850;
+
+            letter-spacing: -1px;
         }
 
-        .logo p {
-            margin-top: 8px;
-            color: #777777;
-            font-size: 14px;
+        .brand-name span {
+            color: white;
+        }
+
+        .brand-name strong {
+            color: var(--orange);
+        }
+
+        .brand-subtitle {
+            margin-top: 9px;
+
+            color: #929a9f;
+
+            font-size: 11px;
+
+            letter-spacing: 0.08em;
+
+            text-transform: uppercase;
+        }
+
+        .brand-message {
+            position: relative;
+            z-index: 2;
+
+            max-width: 430px;
+        }
+
+        .brand-message small {
+            display: block;
+
+            margin-bottom: 13px;
+
+            color: var(--orange);
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 0.12em;
+
+            text-transform: uppercase;
+        }
+
+        .brand-message h2 {
+            margin: 0;
+
+            max-width: 400px;
+
+            color: white;
+
+            font-size: 38px;
+            line-height: 1.08;
+
+            letter-spacing: -1.4px;
+        }
+
+        .brand-message p {
+            margin: 18px 0 0;
+
+            max-width: 400px;
+
+            color: #8e979d;
+
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .brand-footer {
+            position: relative;
+            z-index: 2;
+
+            color: #596268;
+
+            font-size: 10px;
+
+            letter-spacing: 0.08em;
+        }
+
+        .form-side {
+            min-height: 650px;
+
+            padding: 48px 42px;
+
+            display: flex;
+            align-items: center;
+
+            background:
+                rgba(17, 21, 24, 0.97);
+        }
+
+        .form-content {
+            width: 100%;
+        }
+
+        .form-heading {
+            margin-bottom: 28px;
+        }
+
+        .form-heading h2 {
+            margin: 0;
+
+            color: white;
+
+            font-size: 25px;
+        }
+
+        .form-heading p {
+            margin: 7px 0 0;
+
+            color: var(--muted);
+
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 5px;
+
+            margin-bottom: 25px;
+
+            padding: 4px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 9px;
+
+            background: #0e1214;
+        }
+
+        .tab-button {
+            padding: 10px;
+
+            border: 0;
+            border-radius: 6px;
+
+            background: transparent;
+
+            color: #818a90;
+
+            font-family: inherit;
+
+            font-size: 11px;
+            font-weight: 750;
+
+            cursor: pointer;
+        }
+
+        .tab-button.active {
+            background: #20262a;
+
+            color: white;
+        }
+
+        .form-panel {
+            display: none;
+        }
+
+        .form-panel.active {
+            display: block;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .form-group label {
             display: block;
+
             margin-bottom: 7px;
-            font-weight: bold;
-            color: #3b3b3b;
+
+            color: #b9c0c4;
+
+            font-size: 10px;
+            font-weight: 700;
         }
 
         .form-group input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #cccccc;
-            border-radius: 6px;
+            height: 43px;
+
+            padding: 10px 12px;
+
+            border:
+                1px solid var(--border-light);
+
+            border-radius: 8px;
+
+            outline: none;
+
+            background: #0e1214;
+
+            color: white;
+
             font-family: inherit;
-            font-size: 14px;
-            background: #fafafa;
+
+            font-size: 12px;
+
+            transition: 0.18s ease;
         }
 
         .form-group input:focus {
-            outline: none;
-            border-color: #f28c28;
-            background: white;
+            border-color: var(--orange);
+
+            box-shadow:
+                0 0 0 3px rgba(255, 114, 0, 0.08);
         }
 
-        .login-button {
-            width: 100%;
-            background: #f28c28;
-            color: white;
-            border: none;
-            padding: 13px;
-            border-radius: 6px;
+        .form-group input::placeholder {
+            color: #596268;
+        }
+
+        .password-row {
+            display: flex;
+            justify-content: flex-end;
+
+            margin-top: -7px;
+            margin-bottom: 16px;
+        }
+
+        .text-button {
+            padding: 0;
+
+            border: 0;
+
+            background: transparent;
+
+            color: var(--orange-light);
+
+            font-family: inherit;
+
+            font-size: 10px;
+
             cursor: pointer;
-            font-size: 15px;
-            font-weight: bold;
         }
 
-        .login-button:hover {
-            background: #d97512;
-        }
+        .primary-button {
+            width: 100%;
+            height: 44px;
 
-        .error-message {
-            display: none;
-            background: #ffe5e5;
-            color: #b00020;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            text-align: center;
-        }
+            border: 0;
+            border-radius: 8px;
 
-        .login-footer {
-            text-align: center;
-            margin-top: 25px;
-            color: #999999;
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff6500,
+                    #ff7f12
+                );
+
+            color: white;
+
+            font-family: inherit;
+
             font-size: 12px;
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition: 0.18s ease;
+        }
+
+        .primary-button:hover {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 8px 24px rgba(255, 114, 0, 0.18);
+        }
+
+        .message {
+            display: none;
+
+            margin-bottom: 18px;
+
+            padding: 11px 12px;
+
+            border-radius: 7px;
+
+            font-size: 10px;
+            line-height: 1.5;
+        }
+
+        .message.error {
+            display: block;
+
+            border:
+                1px solid rgba(255, 93, 82, 0.25);
+
+            background:
+                rgba(255, 93, 82, 0.08);
+
+            color: #ff8d85;
+        }
+
+        .message.success {
+            display: block;
+
+            border:
+                1px solid rgba(107, 199, 122, 0.25);
+
+            background:
+                rgba(107, 199, 122, 0.08);
+
+            color: #8bd697;
+        }
+
+        .register-note {
+            margin-top: 15px;
+
+            color: #6f787e;
+
+            font-size: 9px;
+            line-height: 1.5;
+
+            text-align: center;
+        }
+
+        .forgot-panel {
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 15px;
+
+            border:
+                1px solid rgba(255, 114, 0, 0.18);
+
+            border-radius: 8px;
+
+            background:
+                rgba(255, 114, 0, 0.05);
+
+            color: #a9b0b4;
+
+            font-size: 10px;
+            line-height: 1.55;
+        }
+
+        @media (max-width: 850px) {
+
+            .page {
+                max-width: 470px;
+
+                grid-template-columns: 1fr;
+            }
+
+            .brand-side {
+                min-height: auto;
+
+                padding: 32px;
+            }
+
+            .brand-message {
+                margin-top: 50px;
+            }
+
+            .brand-message h2 {
+                font-size: 28px;
+            }
+
+            .brand-footer {
+                margin-top: 45px;
+            }
+
+            .form-side {
+                min-height: auto;
+
+                padding: 38px 30px;
+            }
         }
 
     </style>
@@ -125,93 +551,572 @@
 
 <body>
 
-    <div class="login-container">
+<div class="page">
 
-        <div class="login-card">
+    <section class="brand-side">
 
-            <div class="logo">
+        <div class="brand">
 
-                <h1>GEOTRACK</h1>
+            <h1 class="brand-name">
+                <span>Geo</span><strong>Track</strong>
+            </h1>
 
-                <p>
-                    Geotechnical Project Management System
-                </p>
-
-            </div>
-
-            <div
-                id="errorMessage"
-                class="error-message"
-            >
-                Invalid username or password.
-            </div>
-
-            <form action="/login" method="post">
-
-                <div class="form-group">
-
-                    <label for="username">
-                        Username
-                    </label>
-
-                    <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        placeholder="Enter username"
-                        required
-                    >
-
-                </div>
-
-                <div class="form-group">
-
-                    <label for="password">
-                        Password
-                    </label>
-
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Enter password"
-                        required
-                    >
-
-                </div>
-
-                <button
-                    type="submit"
-                    class="login-button"
-                >
-                    Login
-                </button>
-
-            </form>
-
-            <div class="login-footer">
-                GeoTrack © 2026
+            <div class="brand-subtitle">
+                Geotechnical Project Management
             </div>
 
         </div>
 
-    </div>
+        <div class="brand-message">
 
-    <script>
+            <small>
+                Project Intelligence
+            </small>
 
-        const params = new URLSearchParams(
+            <h2>
+                Ground data.
+                Project clarity.
+            </h2>
+
+            <p>
+                Manage geotechnical projects,
+                site investigations, deadlines,
+                clients and field activity from
+                one secure workspace.
+            </p>
+
+        </div>
+
+        <div class="brand-footer">
+            GEOTRACK © 2026
+        </div>
+
+    </section>
+
+
+    <section class="form-side">
+
+        <div class="form-content">
+
+            <div class="form-heading">
+
+                <h2>
+                    Welcome to GeoTrack
+                </h2>
+
+                <p>
+                    Sign in to your workspace or
+                    create a new company workspace.
+                </p>
+
+            </div>
+
+
+            <div class="tabs">
+
+                <button
+                    id="signInTab"
+                    class="tab-button active"
+                    type="button"
+                    onclick="showPanel('login')"
+                >
+                    Sign In
+                </button>
+
+                <button
+                    id="registerTab"
+                    class="tab-button"
+                    type="button"
+                    onclick="showPanel('register')"
+                >
+                    Create Account
+                </button>
+
+            </div>
+
+
+            <div
+                id="pageMessage"
+                class="message"
+            ></div>
+
+
+            <!-- LOGIN -->
+
+            <div
+                id="loginPanel"
+                class="form-panel active"
+            >
+
+                <form
+                    action="/login"
+                    method="post"
+                >
+
+                    <div class="form-group">
+
+                        <label for="loginEmail">
+                            EMAIL OR USERNAME
+                        </label>
+
+                        <input
+                            id="loginEmail"
+                            name="username"
+                            type="text"
+                            autocomplete="username"
+                            placeholder="name@company.com"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="loginPassword">
+                            PASSWORD
+                        </label>
+
+                        <input
+                            id="loginPassword"
+                            name="password"
+                            type="password"
+                            autocomplete="current-password"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="password-row">
+
+                        <button
+                            class="text-button"
+                            type="button"
+                            onclick="showForgotPassword()"
+                        >
+                            Forgot password?
+                        </button>
+
+                    </div>
+
+
+                    <button
+                        class="primary-button"
+                        type="submit"
+                    >
+                        Sign In
+                    </button>
+
+                </form>
+
+
+                <div
+                    id="forgotPanel"
+                    class="forgot-panel"
+                >
+                    Password recovery is being prepared
+                    for GeoTrack. The next security stage
+                    will allow a reset link to be sent to
+                    the email address connected to your
+                    account.
+                </div>
+
+            </div>
+
+
+            <!-- REGISTER -->
+
+            <div
+                id="registerPanel"
+                class="form-panel"
+            >
+
+                <form
+                    id="registerForm"
+                    onsubmit="registerAccount(event)"
+                >
+
+                    <div class="form-group">
+
+                        <label for="registerName">
+                            FULL NAME
+                        </label>
+
+                        <input
+                            id="registerName"
+                            type="text"
+                            autocomplete="name"
+                            placeholder="Your name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="registerEmail">
+                            EMAIL ADDRESS
+                        </label>
+
+                        <input
+                            id="registerEmail"
+                            type="email"
+                            autocomplete="email"
+                            placeholder="name@company.com"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="registerOrganisationName">
+                            COMPANY NAME
+                        </label>
+
+                        <input
+                            id="registerOrganisationName"
+                            type="text"
+                            autocomplete="organization"
+                            minlength="2"
+                            maxlength="150"
+                            placeholder="Your company name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="registerPassword">
+                            PASSWORD
+                        </label>
+
+                        <input
+                            id="registerPassword"
+                            type="password"
+                            autocomplete="new-password"
+                            minlength="8"
+                            placeholder="Minimum 8 characters"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="registerConfirmPassword">
+                            CONFIRM PASSWORD
+                        </label>
+
+                        <input
+                            id="registerConfirmPassword"
+                            type="password"
+                            autocomplete="new-password"
+                            minlength="8"
+                            placeholder="Repeat your password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        class="primary-button"
+                        type="submit"
+                    >
+                        Create Company Account
+                    </button>
+
+
+                    <div class="register-note">
+                        Creating an account creates a new
+                        company workspace. The first user
+                        becomes that company's administrator.
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+    const params =
+        new URLSearchParams(
             window.location.search
         );
 
-        if (params.get("error") === "true") {
 
+    if (params.get("error") === "true") {
+
+        showMessage(
+            "Email/username or password is incorrect.",
+            "error"
+        );
+    }
+
+
+    if (params.get("logout") === "true") {
+
+        showMessage(
+            "You have been logged out successfully.",
+            "success"
+        );
+    }
+
+
+    function showPanel(panel) {
+
+        const loginPanel =
             document.getElementById(
-                "errorMessage"
-            ).style.display = "block";
+                "loginPanel"
+            );
 
+        const registerPanel =
+            document.getElementById(
+                "registerPanel"
+            );
+
+        const signInTab =
+            document.getElementById(
+                "signInTab"
+            );
+
+        const registerTab =
+            document.getElementById(
+                "registerTab"
+            );
+
+        document
+            .getElementById("pageMessage")
+            .className = "message";
+
+        if (panel === "login") {
+
+            loginPanel.classList.add(
+                "active"
+            );
+
+            registerPanel.classList.remove(
+                "active"
+            );
+
+            signInTab.classList.add(
+                "active"
+            );
+
+            registerTab.classList.remove(
+                "active"
+            );
+
+        } else {
+
+            registerPanel.classList.add(
+                "active"
+            );
+
+            loginPanel.classList.remove(
+                "active"
+            );
+
+            registerTab.classList.add(
+                "active"
+            );
+
+            signInTab.classList.remove(
+                "active"
+            );
+        }
+    }
+
+
+    async function registerAccount(event) {
+
+        event.preventDefault();
+
+        const fullName =
+            document
+                .getElementById(
+                    "registerName"
+                )
+                .value
+                .trim();
+
+        const email =
+            document
+                .getElementById(
+                    "registerEmail"
+                )
+                .value
+                .trim();
+
+        const organisationName =
+            document
+                .getElementById(
+                    "registerOrganisationName"
+                )
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById(
+                    "registerPassword"
+                )
+                .value;
+
+        const confirmPassword =
+            document
+                .getElementById(
+                    "registerConfirmPassword"
+                )
+                .value;
+
+
+        if (password !== confirmPassword) {
+
+            showMessage(
+                "Your passwords do not match.",
+                "error"
+            );
+
+            return;
         }
 
-    </script>
+
+        if (password.length < 8) {
+
+            showMessage(
+                "Password must contain at least 8 characters.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/auth/register",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            fullName: fullName,
+                            email: email,
+                            organisationName: organisationName,
+                            password: password
+                        })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                showMessage(
+                    data.message ||
+                    "GeoTrack could not create your account.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            document
+                .getElementById(
+                    "registerForm"
+                )
+                .reset();
+
+
+            showPanel("login");
+
+
+            document
+                .getElementById(
+                    "loginEmail"
+                )
+                .value = email;
+
+
+            showMessage(
+                "Company workspace created successfully. You can now sign in.",
+                "success"
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Registration failed:",
+                error
+            );
+
+            showMessage(
+                "GeoTrack could not connect to the account service.",
+                "error"
+            );
+        }
+    }
+
+
+    function showForgotPassword() {
+
+        const panel =
+            document.getElementById(
+                "forgotPanel"
+            );
+
+        panel.style.display =
+            panel.style.display === "block"
+                ? "none"
+                : "block";
+    }
+
+
+    function showMessage(
+        message,
+        type
+    ) {
+
+        const element =
+            document.getElementById(
+                "pageMessage"
+            );
+
+        element.textContent =
+            message;
+
+        element.className =
+            "message " + type;
+    }
+
+</script>
 
 </body>
 

@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accept Invitation | GeoTrack</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #0d0f11;
+            --panel: #15181b;
+            --panel-soft: #1b1f23;
+            --border: #2b3035;
+            --text: #f4f4f2;
+            --muted: #9da4aa;
+            --orange: #f47b20;
+            --orange-hover: #ff8d35;
+            --success: #4fc27a;
+            --danger: #ef6464;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(244, 123, 32, 0.08), transparent 30%),
+                radial-gradient(circle at 85% 80%, rgba(244, 123, 32, 0.05), transparent 28%),
+                var(--bg);
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 18px;
+        }
+
+        .topographic {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.14;
+            background-image:
+                repeating-radial-gradient(
+                    ellipse at 15% 20%,
+                    transparent 0,
+                    transparent 22px,
+                    rgba(244, 123, 32, 0.25) 23px,
+                    transparent 24px,
+                    transparent 44px
+                );
+            mask-image: linear-gradient(to bottom right, black, transparent 65%);
+        }
+
+        .shell {
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 11px;
+            margin-bottom: 24px;
+        }
+
+        .brand-mark {
+            width: 42px;
+            height: 42px;
+            border: 2px solid var(--orange);
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            color: var(--orange);
+            background: rgba(244, 123, 32, 0.08);
+        }
+
+        .brand-name {
+            font-size: 24px;
+            font-weight: 750;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-name span {
+            color: var(--orange);
+        }
+
+        .card {
+            background: rgba(21, 24, 27, 0.96);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 34px;
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+        }
+
+        .eyebrow {
+            color: var(--orange);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.6px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 28px;
+            line-height: 1.15;
+            letter-spacing: -0.7px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            line-height: 1.6;
+            font-size: 14px;
+            margin-bottom: 26px;
+        }
+
+        .invite-summary {
+            display: none;
+            background: var(--panel-soft);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .summary-row + .summary-row {
+            margin-top: 12px;
+        }
+
+        .summary-label {
+            color: var(--muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 3px;
+        }
+
+        .summary-value {
+            font-size: 14px;
+            font-weight: 650;
+            overflow-wrap: anywhere;
+        }
+
+        .field {
+            margin-bottom: 17px;
+        }
+
+        label {
+            display: block;
+            color: #d9dcde;
+            font-size: 13px;
+            font-weight: 650;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            background: #101316;
+            color: var(--text);
+            padding: 13px 14px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.18s, box-shadow 0.18s;
+        }
+
+        input:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(244, 123, 32, 0.12);
+        }
+
+        input::placeholder {
+            color: #626a70;
+        }
+
+        .password-note {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 7px;
+        }
+
+        button {
+            width: 100%;
+            border: 0;
+            border-radius: 11px;
+            background: var(--orange);
+            color: #111;
+            padding: 13px 16px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background 0.18s, transform 0.18s;
+        }
+
+        button:hover:not(:disabled) {
+            background: var(--orange-hover);
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.55;
+        }
+
+        .message {
+            display: none;
+            border-radius: 11px;
+            padding: 12px 14px;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .message.error {
+            display: block;
+            background: rgba(239, 100, 100, 0.09);
+            border: 1px solid rgba(239, 100, 100, 0.32);
+            color: #ffaaaa;
+        }
+
+        .message.success {
+            display: block;
+            background: rgba(79, 194, 122, 0.09);
+            border: 1px solid rgba(79, 194, 122, 0.3);
+            color: #9ee6b9;
+        }
+
+        .loading {
+            color: var(--muted);
+            text-align: center;
+            padding: 20px 0 8px;
+            font-size: 14px;
+        }
+
+        .form-area {
+            display: none;
+        }
+
+        .success-area {
+            display: none;
+            text-align: center;
+        }
+
+        .success-icon {
+            width: 62px;
+            height: 62px;
+            margin: 4px auto 18px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: rgba(79, 194, 122, 0.11);
+            border: 1px solid rgba(79, 194, 122, 0.35);
+            color: var(--success);
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+        .login-link {
+            display: inline-block;
+            width: 100%;
+            margin-top: 18px;
+            border-radius: 11px;
+            background: var(--orange);
+            color: #111;
+            padding: 13px 16px;
+            font-size: 14px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .footer-note {
+            color: #6e757b;
+            text-align: center;
+            font-size: 11px;
+            line-height: 1.5;
+            margin-top: 18px;
+        }
+
+        @media (max-width: 560px) {
+            .card {
+                padding: 26px 20px;
+                border-radius: 16px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="topographic"></div>
+
+    <main class="shell">
+        <div class="brand">
+            <div class="brand-mark">G</div>
+            <div class="brand-name">Geo<span>Track</span></div>
+        </div>
+
+        <section class="card">
+            <div class="eyebrow">Team Invitation</div>
+            <h1 id="pageTitle">Checking your invitation...</h1>
+            <p class="subtitle" id="pageSubtitle">
+                GeoTrack is securely validating your invitation link.
+            </p>
+
+            <div id="message" class="message"></div>
+            <div id="loading" class="loading">Validating invitation...</div>
+
+            <div id="formArea" class="form-area">
+                <div id="inviteSummary" class="invite-summary">
+                    <div class="summary-row">
+                        <div class="summary-label">Name</div>
+                        <div class="summary-value" id="inviteName"></div>
+                    </div>
+
+                    <div class="summary-row">
+                        <div class="summary-label">Email</div>
+                        <div class="summary-value" id="inviteEmail"></div>
+                    </div>
+
+                    <div class="summary-row">
+                        <div class="summary-label">Company</div>
+                        <div class="summary-value" id="inviteCompany"></div>
+                    </div>
+                </div>
+
+                <form id="acceptForm">
+                    <div class="field">
+                        <label for="password">Create password</label>
+                        <input
+                            id="password"
+                            type="password"
+                            autocomplete="new-password"
+                            minlength="8"
+                            placeholder="At least 8 characters"
+                            required
+                        >
+                        <div class="password-note">
+                            Your password must contain at least 8 characters.
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="confirmPassword">Confirm password</label>
+                        <input
+                            id="confirmPassword"
+                            type="password"
+                            autocomplete="new-password"
+                            minlength="8"
+                            placeholder="Enter your password again"
+                            required
+                        >
+                    </div>
+
+                    <button id="activateButton" type="submit">
+                        Activate GeoTrack Account
+                    </button>
+                </form>
+            </div>
+
+            <div id="successArea" class="success-area">
+                <div class="success-icon">✓</div>
+                <h1>Account activated</h1>
+                <p class="subtitle">
+                    Your GeoTrack staff account is ready. You can now sign in
+                    using the email address from your invitation.
+                </p>
+
+                <a class="login-link" href="/login.html">
+                    Go to GeoTrack Login
+                </a>
+            </div>
+        </section>
+
+        <div class="footer-note">
+            GeoTrack · Secure geotechnical project management
+        </div>
+    </main>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get("token");
+
+        const pageTitle = document.getElementById("pageTitle");
+        const pageSubtitle = document.getElementById("pageSubtitle");
+        const message = document.getElementById("message");
+        const loading = document.getElementById("loading");
+        const formArea = document.getElementById("formArea");
+        const successArea = document.getElementById("successArea");
+        const inviteSummary = document.getElementById("inviteSummary");
+        const inviteName = document.getElementById("inviteName");
+        const inviteEmail = document.getElementById("inviteEmail");
+        const inviteCompany = document.getElementById("inviteCompany");
+        const acceptForm = document.getElementById("acceptForm");
+        const password = document.getElementById("password");
+        const confirmPassword = document.getElementById("confirmPassword");
+        const activateButton = document.getElementById("activateButton");
+
+        function showError(text) {
+            message.textContent = text;
+            message.className = "message error";
+        }
+
+        function clearMessage() {
+            message.textContent = "";
+            message.className = "message";
+        }
+
+        async function readJson(response) {
+            try {
+                return await response.json();
+            } catch (error) {
+                return {};
+            }
+        }
+
+        async function validateInvitation() {
+            if (!token) {
+                loading.style.display = "none";
+                pageTitle.textContent = "Invitation link unavailable";
+                pageSubtitle.textContent =
+                    "This GeoTrack invitation link is missing its secure token.";
+                showError(
+                    "Please use the complete invitation link sent by your company administrator."
+                );
+                return;
+            }
+
+            try {
+                const response = await fetch(
+                    "/api/auth/invitations/validate",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            token: token
+                        })
+                    }
+                );
+
+                const data = await readJson(response);
+
+                if (!response.ok || data.valid !== true) {
+                    throw new Error(
+                        data.message ||
+                        "This invitation is invalid, expired, or has already been used."
+                    );
+                }
+
+                loading.style.display = "none";
+                pageTitle.textContent = "Welcome to GeoTrack";
+                pageSubtitle.textContent =
+                    "You've been invited to join your company's GeoTrack workspace. Create your password to activate your staff account.";
+
+                inviteName.textContent = data.fullName || "";
+                inviteEmail.textContent = data.email || "";
+                inviteCompany.textContent = data.organisationName || "";
+
+                inviteSummary.style.display = "block";
+                formArea.style.display = "block";
+
+            } catch (error) {
+                loading.style.display = "none";
+                pageTitle.textContent = "Invitation unavailable";
+                pageSubtitle.textContent =
+                    "We couldn't validate this GeoTrack invitation.";
+                showError(
+                    error.message ||
+                    "This invitation is invalid, expired, or has already been used."
+                );
+            }
+        }
+
+        acceptForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+            clearMessage();
+
+            const chosenPassword = password.value;
+            const confirmation = confirmPassword.value;
+
+            if (chosenPassword.length < 8) {
+                showError(
+                    "Your password must contain at least 8 characters."
+                );
+                return;
+            }
+
+            if (chosenPassword !== confirmation) {
+                showError(
+                    "The passwords do not match. Please enter them again."
+                );
+                return;
+            }
+
+            activateButton.disabled = true;
+            activateButton.textContent = "Activating Account...";
+
+            try {
+                const response = await fetch(
+                    "/api/auth/invitations/accept",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            token: token,
+                            password: chosenPassword
+                        })
+                    }
+                );
+
+                const data = await readJson(response);
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.message ||
+                        "GeoTrack could not activate this account."
+                    );
+                }
+
+                formArea.style.display = "none";
+                pageTitle.style.display = "none";
+                pageSubtitle.style.display = "none";
+                clearMessage();
+                successArea.style.display = "block";
+
+                password.value = "";
+                confirmPassword.value = "";
+
+            } catch (error) {
+                showError(
+                    error.message ||
+                    "GeoTrack could not activate this account."
+                );
+
+                activateButton.disabled = false;
+                activateButton.textContent =
+                    "Activate GeoTrack Account";
+            }
+        });
+
+        validateInvitation();
+    </script>
+</body>
+</html>

@@ -1,13 +1,16 @@
 package com.jessicagray.geotrack.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
@@ -42,15 +45,24 @@ public class Project {
 
     private LocalDate targetCompletionDate;
 
+    /*
+     * The organisation that owns this project.
+     *
+     * This is temporarily nullable while existing GeoTrack
+     * projects are migrated into the HESI organisation.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organisation_id")
+    @JsonIgnore
+    private Organisation organisation;
+
     @OneToMany(mappedBy = "project")
     @JsonManagedReference
     private List<SiteInvestigation> investigations =
             new ArrayList<>();
 
-
     public Project() {
     }
-
 
     public Project(
             String projectReference,
@@ -68,11 +80,9 @@ public class Project {
         this.description = description;
     }
 
-
     public Long getId() {
         return id;
     }
-
 
     public String getProjectReference() {
         return projectReference;
@@ -84,7 +94,6 @@ public class Project {
         this.projectReference = projectReference;
     }
 
-
     public String getProjectName() {
         return projectName;
     }
@@ -94,7 +103,6 @@ public class Project {
 
         this.projectName = projectName;
     }
-
 
     public String getLocation() {
         return location;
@@ -106,7 +114,6 @@ public class Project {
         this.location = location;
     }
 
-
     public String getClientName() {
         return clientName;
     }
@@ -116,7 +123,6 @@ public class Project {
 
         this.clientName = clientName;
     }
-
 
     public String getStatus() {
         return status;
@@ -128,7 +134,6 @@ public class Project {
         this.status = status;
     }
 
-
     public String getDescription() {
         return description;
     }
@@ -139,7 +144,6 @@ public class Project {
         this.description = description;
     }
 
-
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -149,7 +153,6 @@ public class Project {
 
         this.startDate = startDate;
     }
-
 
     public LocalDate getTargetCompletionDate() {
         return targetCompletionDate;
@@ -162,7 +165,6 @@ public class Project {
                 targetCompletionDate;
     }
 
-
     public String getDeadlineStatus() {
 
         if (targetCompletionDate == null) {
@@ -173,7 +175,8 @@ public class Project {
             return "OVERDUE";
         }
 
-        if (!LocalDate.now().plusDays(7)
+        if (!LocalDate.now()
+                .plusDays(7)
                 .isBefore(targetCompletionDate)) {
 
             return "DUE_SOON";
@@ -182,9 +185,17 @@ public class Project {
         return "ON_TRACK";
     }
 
+    public Organisation getOrganisation() {
+        return organisation;
+    }
+
+    public void setOrganisation(
+            Organisation organisation) {
+
+        this.organisation = organisation;
+    }
 
     public List<SiteInvestigation> getInvestigations() {
-
         return investigations;
     }
 

@@ -12,11 +12,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/investigations")
-@CrossOrigin(origins = "*")
 public class SiteInvestigationController {
 
     private final SiteInvestigationService service;
-
 
     public SiteInvestigationController(
             SiteInvestigationService service) {
@@ -24,13 +22,11 @@ public class SiteInvestigationController {
         this.service = service;
     }
 
-
     @GetMapping
     public List<SiteInvestigation> getAllInvestigations() {
 
         return service.getAllInvestigations();
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<SiteInvestigation> getInvestigationById(
@@ -43,7 +39,6 @@ public class SiteInvestigationController {
                 );
     }
 
-
     @PostMapping
     public SiteInvestigation createInvestigation(
             @Valid @RequestBody SiteInvestigation investigation) {
@@ -52,7 +47,6 @@ public class SiteInvestigationController {
                 investigation
         );
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<SiteInvestigation> updateInvestigation(
@@ -74,7 +68,6 @@ public class SiteInvestigationController {
         }
     }
 
-
     @PutMapping("/{investigationId}/project/{projectId}")
     public ResponseEntity<SiteInvestigation> assignProject(
             @PathVariable Long investigationId,
@@ -95,7 +88,6 @@ public class SiteInvestigationController {
         }
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteInvestigation(
             @PathVariable Long id) {
@@ -111,5 +103,4 @@ public class SiteInvestigationController {
             return ResponseEntity.notFound().build();
         }
     }
-
 }

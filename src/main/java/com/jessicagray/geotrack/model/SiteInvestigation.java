@@ -1,9 +1,11 @@
 package com.jessicagray.geotrack.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -71,15 +73,31 @@ public class SiteInvestigation {
     )
     private String notes;
 
+    /*
+     * Every investigation belongs directly to an organisation.
+     *
+     * This is temporarily nullable while existing GeoTrack
+     * investigations are migrated to HESI.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organisation_id")
+    @JsonIgnore
+    private Organisation organisation;
+
+    /*
+     * An investigation may optionally be associated
+     * with a project.
+     *
+     * The service layer will ensure that the project
+     * belongs to the same organisation.
+     */
     @ManyToOne
     @JoinColumn(name = "project_id")
     @JsonBackReference
     private Project project;
 
-
     public SiteInvestigation() {
     }
-
 
     public SiteInvestigation(
             String investigationReference,
@@ -108,11 +126,9 @@ public class SiteInvestigation {
                 notes;
     }
 
-
     public Long getId() {
         return id;
     }
-
 
     public String getInvestigationReference() {
         return investigationReference;
@@ -125,7 +141,6 @@ public class SiteInvestigation {
                 investigationReference;
     }
 
-
     public String getInvestigationType() {
         return investigationType;
     }
@@ -137,7 +152,6 @@ public class SiteInvestigation {
                 investigationType;
     }
 
-
     public String getLocation() {
         return location;
     }
@@ -145,10 +159,8 @@ public class SiteInvestigation {
     public void setLocation(
             String location) {
 
-        this.location =
-                location;
+        this.location = location;
     }
-
 
     public String getStatus() {
         return status;
@@ -157,10 +169,8 @@ public class SiteInvestigation {
     public void setStatus(
             String status) {
 
-        this.status =
-                status;
+        this.status = status;
     }
-
 
     public String getDate() {
         return date;
@@ -169,10 +179,8 @@ public class SiteInvestigation {
     public void setDate(
             String date) {
 
-        this.date =
-                date;
+        this.date = date;
     }
-
 
     public String getNotes() {
         return notes;
@@ -181,10 +189,18 @@ public class SiteInvestigation {
     public void setNotes(
             String notes) {
 
-        this.notes =
-                notes;
+        this.notes = notes;
     }
 
+    public Organisation getOrganisation() {
+        return organisation;
+    }
+
+    public void setOrganisation(
+            Organisation organisation) {
+
+        this.organisation = organisation;
+    }
 
     public Project getProject() {
         return project;
@@ -193,10 +209,8 @@ public class SiteInvestigation {
     public void setProject(
             Project project) {
 
-        this.project =
-                project;
+        this.project = project;
     }
-
 
     @JsonProperty("projectId")
     public Long getProjectId() {
